@@ -1,7 +1,7 @@
 from django.test import TestCase
-from django.test import TestCase
 from django.urls import resolve
 
+from lists.models import Item
 from lists.views import home_page
 
 
@@ -23,3 +23,23 @@ class HomePageTest(TestCase):
         response = self.client.post("/", data={"item_text": "A new list item"})
         self.assertIn("A new list item", response.content.decode())
         self.assertTemplateUsed(response, "home.html")
+
+
+class ItemModelTest(TestCase):
+    def test_saving_and_retriving_items(self):
+        firstItem = Item()
+        firstItem.text = "Это первая запись"
+        firstItem.save()
+
+        secondItem = Item()
+        secondItem.text = "Это вторая запись"
+        secondItem.save()
+
+        savedItems = Item.objects.all()
+        self.assertEqual(savedItems.count(), 2)
+
+        firstSavedItem = savedItems[0]
+        secondSavedItem = savedItems[1]
+
+        self.assertEqual(firstItem.text, "Это первая запись")
+        self.assertEqual(secondItem.text, "Это вторая запись")
