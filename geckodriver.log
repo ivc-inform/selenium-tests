@@ -564,3 +564,9 @@ JavaScript error: jar:file:///usr/lib/firefox/omni.ja!/components/nsUrlClassifie
 1529776075757	Marionette	INFO	Listening on port 34973
 1529776075800	Marionette	WARN	TLS certificate errors will be ignored for this session
 *** UTM:SVC TimerManager:registerTimer called after profile-before-change notification. Ignoring timer registration for id: telemetry_modules_ping
+1529776266953	geckodriver	INFO	geckodriver 0.21.0
+1529776266956	geckodriver	INFO	Listening on 127.0.0.1:37133
+1529776267968	mozrunner::runner	INFO	Running command: "/usr/bin/firefox" "-marionette" "-foreground" "-no-remote" "-profile" "/tmp/rust_mozprofile.zOWreguFZOMy"
+1529776269568	Marionette	INFO	Listening on port 42927
+1529776269575	Marionette	WARN	TLS certificate errors will be ignored for this session
+*** UTM:SVC TimerManager:registerTimer called after profile-before-change notification. Ignoring timer registration for id: telemetry_modules_ping
