@@ -21,6 +21,10 @@ class HomePageTest(TestCase):
 
     def test_can_have_a_post_response(self):
         response = self.client.post("/", data={"item_text": "A new list item"})
+        self.assertEqual(Item.objects.count(), 1)
+        newItem = Item.objects.first()
+        self.assertEqual(newItem.text, "A new list item")
+
         self.assertIn("A new list item", response.content.decode())
         self.assertTemplateUsed(response, "home.html")
 
