@@ -7,8 +7,14 @@ from selenium.webdriver.common.keys import Keys
 
 
 class NewVisitorTest(unittest.TestCase):
+
+
     def setUp(self):
         "Установка"
+        self.toDoList = [
+            "Купить павлиньи перья",
+            "Сделать мушку из павлиньих перев"
+        ]
         self.browser = webdriver.Firefox()
 
     def tearDown(self):
@@ -35,11 +41,11 @@ class NewVisitorTest(unittest.TestCase):
         header_text = self.browser.find_element_by_tag_name("h1").text
         self.assertIn('To-Do', header_text)
 
-        self.imputToDo("Купить павлиньи перья")
-        self.imputToDo("Сделать мушку из павлиньих перев")
+        self.imputToDo(self.toDoList[0])
+        self.imputToDo(self.toDoList[1])
 
-        self.checkRowInToDoTabel("1: Купить павлиньи перья")
-        self.checkRowInToDoTabel("2: Сделать мушку из павлиньих перев")
+        self.checkRowInToDoTabel(f"1: {self.toDoList[0]}")
+        self.checkRowInToDoTabel(f"2: {self.toDoList[1]}")
 
         self.fail("Закончить тест ...")
 
