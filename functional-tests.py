@@ -9,7 +9,7 @@ from selenium.webdriver.common.keys import Keys
 class NewVisitorTest(unittest.TestCase):
     def setUp(self):
         "Установка"
-        self.browser = webdriver.Firefox()
+        self.browser = webdriver.Chrome()
 
     def tearDown(self):
         "Демонтаж"
@@ -34,7 +34,7 @@ class NewVisitorTest(unittest.TestCase):
 
         table = self.browser.find_element_by_id("id_list_table")
         rows = table.find_elements_by_tag_name("tr")
-        self.assertTrue(any(rows.text == "1: Купить павлиньи перья" for row in rows), "Новый элемент списка не появился в таблице.")
+        self.assertTrue(any(row.text == "1: Купить павлиньи перья" for row in rows), "Новый элемент списка не появился в таблице.")
 
         self.fail("Закончить тест ...")
 
