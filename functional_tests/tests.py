@@ -2,11 +2,11 @@ import time
 
 from django.test import LiveServerTestCase
 from selenium import webdriver
+from selenium.common.exceptions import WebDriverException
 from selenium.webdriver.common.keys import Keys
 
 
 class NewVisitorTest(LiveServerTestCase):
-
 
     def setUp(self):
         "Установка"
@@ -15,6 +15,8 @@ class NewVisitorTest(LiveServerTestCase):
             "Сделать мушку из павлиньих перев"
         ]
         self.browser = webdriver.Firefox()
+        self.MAX_WAIT = 10
+        self.MIN_WAIT = 0.1
 
     def tearDown(self):
         "Демонтаж"
@@ -25,12 +27,20 @@ class NewVisitorTest(LiveServerTestCase):
         self.assertEqual(inputbox.get_attribute("placeholder"), "Enter a to-do item")
         inputbox.send_keys(toDo)
         inputbox.send_keys(Keys.ENTER)
-        time.sleep(1)
 
     def checkRowInToDoTabel(self, rowText):
-        table = self.browser.find_element_by_id("id_list_table")
-        rows = table.find_elements_by_tag_name("tr")
-        self.assertIn(rowText, [row.text for row in rows])
+        startTime = time.time()
+        while True:
+            try:
+                table = self.browser.find_element_by_id("id_list_table")
+                rows = table.find_elements_by_tag_name("tr")
+                self.assertIn(rowText, [row.text for row in rows])
+            except (AssertionError, WebDriverException) as ex:
+                if time.time() - startTime > self.MAX_WAIT:
+                    raise ex
+                time.sleep(self.MIN_WAIT)
+            else:
+                return
 
     def test_попробуем_статртануть_и_доделаем_позже(self):
         self.browser.get(self.live_server_url)
@@ -41,9 +51,9 @@ class NewVisitorTest(LiveServerTestCase):
         self.assertIn('To-Do', header_text)
 
         self.imputToDo(self.toDoList[0])
-        self.imputToDo(self.toDoList[1])
-
         self.checkRowInToDoTabel(f"1: {self.toDoList[0]}")
+
+        self.imputToDo(self.toDoList[1])
         self.checkRowInToDoTabel(f"2: {self.toDoList[1]}")
 
         self.fail("Закончить тест ...")
