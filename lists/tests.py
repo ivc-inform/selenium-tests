@@ -19,14 +19,28 @@ class HomePageTest(TestCase):
         response = self.client.get("/")
         self.assertTemplateUsed(response, "home.html")
 
+    def test_can_have_a_post_count(self):
+        response = self.client.post("/", data={"item_text": "A new list item"})
+        self.assertEqual(Item.objects.count(), 1)
+
+
     def test_can_have_a_post_response(self):
         response = self.client.post("/", data={"item_text": "A new list item"})
         self.assertEqual(Item.objects.count(), 1)
         newItem = Item.objects.first()
         self.assertEqual(newItem.text, "A new list item")
 
-        self.assertIn("A new list item", response.content.decode())
-        self.assertTemplateUsed(response, "home.html")
+        self.assertEqual(response.status_code, 302)
+        self.assertEqual(response["location"], "/")
+
+    def display_all_list(self):
+        Item.objects.create(text="item 1")
+        Item.objects.create(text="item 2")
+
+        response = self.client.get("/")
+
+        self.assertIn("item 1", response.content.decode())
+        self.assertIn("item 2", response.content.decode())
 
 
 class ItemModelTest(TestCase):

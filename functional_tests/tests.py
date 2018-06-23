@@ -1,12 +1,11 @@
 import time
 
+from django.test import LiveServerTestCase
 from selenium import webdriver
-import unittest
-
 from selenium.webdriver.common.keys import Keys
 
 
-class NewVisitorTest(unittest.TestCase):
+class NewVisitorTest(LiveServerTestCase):
 
 
     def setUp(self):
@@ -34,7 +33,7 @@ class NewVisitorTest(unittest.TestCase):
         self.assertIn(rowText, [row.text for row in rows])
 
     def test_попробуем_статртануть_и_доделаем_позже(self):
-        self.browser.get("http://localhost:8000")
+        self.browser.get(self.live_server_url)
 
         self.assertIn('To-Do', self.browser.title)
 
@@ -48,7 +47,3 @@ class NewVisitorTest(unittest.TestCase):
         self.checkRowInToDoTabel(f"2: {self.toDoList[1]}")
 
         self.fail("Закончить тест ...")
-
-
-if __name__ == "__main__":
-    unittest.main(warnings='ignore')
