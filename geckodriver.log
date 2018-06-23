@@ -558,3 +558,9 @@ _onJSONObjectReady/<()@transport.js:500
 1529776010684	Marionette	WARN	TLS certificate errors will be ignored for this session
 JavaScript error: jar:file:///usr/lib/firefox/omni.ja!/components/nsUrlClassifierListManager.js, line 589: TypeError: this.tablesData[table] is undefined
 *** UTM:SVC TimerManager:registerTimer called after profile-before-change notification. Ignoring timer registration for id: telemetry_modules_ping
+1529776073179	geckodriver	INFO	geckodriver 0.21.0
+1529776073183	geckodriver	INFO	Listening on 127.0.0.1:36351
+1529776074194	mozrunner::runner	INFO	Running command: "/usr/bin/firefox" "-marionette" "-foreground" "-no-remote" "-profile" "/tmp/rust_mozprofile.DkM11hVZ4ocv"
+1529776075757	Marionette	INFO	Listening on port 34973
+1529776075800	Marionette	WARN	TLS certificate errors will be ignored for this session
+*** UTM:SVC TimerManager:registerTimer called after profile-before-change notification. Ignoring timer registration for id: telemetry_modules_ping
