@@ -42,7 +42,10 @@ class NewVisitorTest(LiveServerTestCase):
             else:
                 return
 
-    def test_попробуем_статртануть_и_доделаем_позже(self):
+    def test_can_start_a_list_for_one_user(self):
+        """
+
+        """
         self.browser.get(self.live_server_url)
 
         self.assertIn('To-Do', self.browser.title)
