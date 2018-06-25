@@ -31,9 +31,9 @@ class HomePageTest(TestCase):
         self.assertEqual(newItem.text, "A new list item")
 
         self.assertEqual(response.status_code, 302)
-        self.assertEqual(response["location"], "/")
+        self.assertEqual(response["location"], "/lists/only-single/")
 
-    def display_all_list(self):
+    def display_all_items(self):
         Item.objects.create(text="item 1")
         Item.objects.create(text="item 2")
 
@@ -61,3 +61,13 @@ class ItemModelTest(TestCase):
 
         self.assertEqual(firstItem.text, "Это первая запись")
         self.assertEqual(secondItem.text, "Это вторая запись")
+
+class ListViewTest(TestCase):
+    def display_all_items(self):
+        Item.objects.create(text="item 1")
+        Item.objects.create(text="item 2")
+
+        response = self.client.get("/lists/only-single/")
+
+        self.assertContains(response, "item 1")
+        self.assertContains(response, "item 2")
