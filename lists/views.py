@@ -7,7 +7,6 @@ from lists.models import Item
 # todo Скорректировать модель так, чтобы элементы были связаны с разными списками
 
 def home_page(request):
-    "Домашняя страница"
     if request.method == "POST":
         Item.objects.create(text=request.POST["item_text"])
         return redirect("/lists/only-single/")
@@ -20,4 +19,5 @@ def view_list(request):
 
 
 def new_list(request):
+    Item.objects.create(text=request.POST["item_text"])
     return redirect("/lists/only-single/")

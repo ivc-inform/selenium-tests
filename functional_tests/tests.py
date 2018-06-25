@@ -16,7 +16,7 @@ class NewVisitorTest(LiveServerTestCase):
             "Купить молоко"
         ]
         self.browser = webdriver.Firefox()
-        self.MAX_WAIT = 10
+        self.MAX_WAIT = 2
         self.MIN_WAIT = 0.1
 
     def tearDown(self):
