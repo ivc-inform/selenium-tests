@@ -3,6 +3,7 @@ from django.shortcuts import render, redirect
 
 from lists.models import Item
 
+
 # todo Скорректировать модель так, чтобы элементы были связаны с разными списками
 
 def home_page(request):
@@ -13,3 +14,7 @@ def home_page(request):
 
     items = Item.objects.all()
     return render(request, "home.html", {"items": items})
+
+
+def view_list(request):
+    return render(request, "home.html", dict(items=Item.objects.all()))
