@@ -1,7 +1,7 @@
 from django.test import TestCase
 from django.urls import resolve
 
-from lists.models import Item
+from lists.models import Item, List
 from lists.views import home_page
 
 
@@ -39,13 +39,21 @@ class HomePageTest(TestCase):
 
 class ItemModelTest(TestCase):
     def test_saving_and_retriving_items(self):
+        list_ = List()
+        list_.save()
+
         firstItem = Item()
         firstItem.text = "Это первая запись"
+        firstItem.list = list_
         firstItem.save()
 
         secondItem = Item()
         secondItem.text = "Это вторая запись"
+        secondItem.list = list_
         secondItem.save()
+
+        savedItems = List.objects.all()
+        self.assertEqual(savedItems.count(), 1)
 
         savedItems = Item.objects.all()
         self.assertEqual(savedItems.count(), 2)
@@ -54,7 +62,9 @@ class ItemModelTest(TestCase):
         secondSavedItem = savedItems[1]
 
         self.assertEqual(firstItem.text, "Это первая запись")
+        self.assertEqual(firstItem.list, list_)
         self.assertEqual(secondItem.text, "Это вторая запись")
+        self.assertEqual(secondItem.list, list_)
 
 
 class ListViewTest(TestCase):
@@ -63,8 +73,9 @@ class ListViewTest(TestCase):
         self.assertTemplateUsed(response, "list.html")
 
     def test_display_all_items(self):
-        Item.objects.create(text="item 1")
-        Item.objects.create(text="item 2")
+        list_ = List.objects.create()
+        Item.objects.create(text="item 1", list=list_)
+        Item.objects.create(text="item 2", list=list_)
 
         response = self.client.get("/lists/only-single/")
 
