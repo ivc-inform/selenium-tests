@@ -39,17 +39,17 @@ class HomePageTest(TestCase):
 
 class ItemModelTest(TestCase):
     def test_saving_and_retriving_items(self):
-        list_ = List()
-        list_.save()
+        list = List()
+        list.save()
 
         firstItem = Item()
         firstItem.text = "Это первая запись"
-        firstItem.list = list_
+        firstItem.list = list
         firstItem.save()
 
         secondItem = Item()
         secondItem.text = "Это вторая запись"
-        secondItem.list = list_
+        secondItem.list = list
         secondItem.save()
 
         savedItems = List.objects.all()
@@ -62,9 +62,9 @@ class ItemModelTest(TestCase):
         secondSavedItem = savedItems[1]
 
         self.assertEqual(firstItem.text, "Это первая запись")
-        self.assertEqual(firstItem.list, list_)
+        self.assertEqual(firstItem.list, list)
         self.assertEqual(secondItem.text, "Это вторая запись")
-        self.assertEqual(secondItem.list, list_)
+        self.assertEqual(secondItem.list, list)
 
 
 class ListViewTest(TestCase):
@@ -73,9 +73,9 @@ class ListViewTest(TestCase):
         self.assertTemplateUsed(response, "list.html")
 
     def test_display_all_items(self):
-        list_ = List.objects.create()
-        Item.objects.create(text="item 1", list=list_)
-        Item.objects.create(text="item 2", list=list_)
+        list = List.objects.create()
+        Item.objects.create(text="item 1", list=list)
+        Item.objects.create(text="item 2", list=list)
 
         response = self.client.get("/lists/only-single/")
 
