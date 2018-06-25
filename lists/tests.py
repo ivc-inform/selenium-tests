@@ -58,7 +58,11 @@ class ItemModelTest(TestCase):
 
 
 class ListViewTest(TestCase):
-    def display_all_items(self):
+    def test_uses_list_templates(self):
+        response = self.client.get("/lists/only-single/")
+        self.assertTemplateUsed(response, "list.html")
+
+    def test_display_all_items(self):
         Item.objects.create(text="item 1")
         Item.objects.create(text="item 2")
 

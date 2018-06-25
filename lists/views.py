@@ -17,4 +17,4 @@ def home_page(request):
 
 
 def view_list(request):
-    return render(request, "home.html", dict(items=Item.objects.all()))
+    return render(request, "list.html", dict(items=Item.objects.all()))
