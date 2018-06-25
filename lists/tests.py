@@ -15,42 +15,19 @@ class HomePageTest(TestCase):
         response = self.client.get("/")
         self.assertTemplateUsed(response, templateHomePage)
 
-    # def test_can_have_a_post_count(self):
-    #     response = self.client.post("/", data={"item_text": "A new list item"})
-    #     self.assertEqual(Item.objects.count(), 1)
-
-    # def test_can_have_a_post_response(self):
-    #     response = self.client.post("/", data={"item_text": "A new list item"})
-    #     self.assertEqual(Item.objects.count(), 1)
-    #     newItem = Item.objects.first()
-    #     self.assertEqual(newItem.text, "A new list item")
-    #
-    #     self.assertEqual(response.status_code, 302)
-    #     self.assertEqual(response["location"], "/lists/only-single/")
-
-    # def display_all_items(self):
-    #     Item.objects.create(text="item 1")
-    #     Item.objects.create(text="item 2")
-    #
-    #     response = self.client.get("/")
-    #
-    #     self.assertIn("item 1", response.content.decode())
-    #     self.assertIn("item 2", response.content.decode())
-
-
 class ItemModelTest(TestCase):
     def test_saving_and_retriving_items(self):
-        list = List()
-        list.save()
+        list_ = List()
+        list_.save()
 
         firstItem = Item()
         firstItem.text = "Это первая запись"
-        firstItem.list = list
+        firstItem.list = list_
         firstItem.save()
 
         secondItem = Item()
         secondItem.text = "Это вторая запись"
-        secondItem.list = list
+        secondItem.list = list_
         secondItem.save()
 
         savedItems = List.objects.all()
@@ -63,9 +40,9 @@ class ItemModelTest(TestCase):
         secondSavedItem = savedItems[1]
 
         self.assertEqual(firstItem.text, "Это первая запись")
-        self.assertEqual(firstItem.list, list)
+        self.assertEqual(firstItem.list, list_)
         self.assertEqual(secondItem.text, "Это вторая запись")
-        self.assertEqual(secondItem.list, list)
+        self.assertEqual(secondItem.list, list_)
 
 
 class ListViewTest(TestCase):
@@ -74,9 +51,9 @@ class ListViewTest(TestCase):
         self.assertTemplateUsed(response, "list.html")
 
     def test_display_all_items(self):
-        list = List.objects.create()
-        Item.objects.create(text="item 1", list=list)
-        Item.objects.create(text="item 2", list=list)
+        list_ = List.objects.create()
+        Item.objects.create(text="item 1", list=list_)
+        Item.objects.create(text="item 2", list=list_)
 
         response = self.client.get(f"/{listUrl()}")
 
@@ -97,12 +74,13 @@ class NewListTest(TestCase):
 
     def test_redirects_after_POST(self):
         response = self.client.post("/lists/new", data=self.dictItemText)
-        self.assertRedirects(response, f"/{listUrl()}")
+        newList = List.objects.first()
+        self.assertRedirects(response, f"/{listUrl(newList.id)}")
 
 class ListViewTest(TestCase):
     def test_users(self):
-        list = List.objects.create()
-        response = self.client.get(f"/{listUrl(list.id)}")
+        list_ = List.objects.create()
+        response = self.client.get(f"/{listUrl(list_.id)}")
         self.assertTemplateUsed(response, templateListPage)
 
     def test_displays_only_items_for_that_list(self):
