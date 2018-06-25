@@ -81,8 +81,8 @@ class NewVisitorTest(LiveServerTestCase):
         self.assertNotIn( self.toDoList[0], page_text)
         self.assertNotIn( self.toDoList[1], page_text)
 
-        self.imputToDo(self.toDoList[3])
-        self.checkRowInToDoTabel(f"1: {self.toDoList[3]}")
+        self.imputToDo(self.toDoList[2])
+        self.checkRowInToDoTabel(f"1: {self.toDoList[2]}")
 
         francis_list_url = self.browser.current_url
         self.assertRegex(francis_list_url, "/lists/.+")
