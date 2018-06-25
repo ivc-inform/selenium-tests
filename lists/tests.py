@@ -2,6 +2,7 @@ from django.test import TestCase
 from django.urls import resolve
 
 from lists.models import Item, List
+from lists.settings import templateListPage, templateHomePage, listUrl
 from lists.views import home_page
 
 
@@ -12,7 +13,7 @@ class HomePageTest(TestCase):
 
     def test_home_page(self):
         response = self.client.get("/")
-        self.assertTemplateUsed(response, "home.html")
+        self.assertTemplateUsed(response, templateHomePage)
 
     # def test_can_have_a_post_count(self):
     #     response = self.client.post("/", data={"item_text": "A new list item"})
@@ -69,7 +70,7 @@ class ItemModelTest(TestCase):
 
 class ListViewTest(TestCase):
     def test_uses_list_templates(self):
-        response = self.client.get("/lists/only-single/")
+        response = self.client.get(f"/{listUrl()}")
         self.assertTemplateUsed(response, "list.html")
 
     def test_display_all_items(self):
@@ -77,7 +78,7 @@ class ListViewTest(TestCase):
         Item.objects.create(text="item 1", list=list)
         Item.objects.create(text="item 2", list=list)
 
-        response = self.client.get("/lists/only-single/")
+        response = self.client.get(f"/{listUrl()}")
 
         self.assertContains(response, "item 1")
         self.assertContains(response, "item 2")
@@ -96,4 +97,27 @@ class NewListTest(TestCase):
 
     def test_redirects_after_POST(self):
         response = self.client.post("/lists/new", data=self.dictItemText)
-        self.assertRedirects(response, "/lists/only-single/")
+        self.assertRedirects(response, f"/{listUrl()}")
+
+class ListViewTest(TestCase):
+    def test_users(self):
+        list = List.objects.create()
+        response = self.client.get(f"/{listUrl(list.id)}")
+        self.assertTemplateUsed(response, templateListPage)
+
+    def test_displays_only_items_for_that_list(self):
+        correctList = List.objects.create()
+        Item.objects.create(text="item 1", list = correctList)
+        Item.objects.create(text="item 2", list = correctList)
+
+        anotherList = List.objects.create()
+        Item.objects.create(text="another item 1", list=anotherList)
+        Item.objects.create(text="another item 2", list=anotherList)
+
+        response = self.client.get(f"/{listUrl(correctList.id)}")
+
+        self.assertContains(response, "item 1")
+        self.assertContains(response, "item 2")
+
+        self.assertNotContains(response, "another item 1")
+        self.assertNotContains(response, "another item 2")
