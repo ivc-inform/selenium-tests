@@ -14,27 +14,27 @@ class HomePageTest(TestCase):
         response = self.client.get("/")
         self.assertTemplateUsed(response, "home.html")
 
-    def test_can_have_a_post_count(self):
-        response = self.client.post("/", data={"item_text": "A new list item"})
-        self.assertEqual(Item.objects.count(), 1)
+    # def test_can_have_a_post_count(self):
+    #     response = self.client.post("/", data={"item_text": "A new list item"})
+    #     self.assertEqual(Item.objects.count(), 1)
 
-    def test_can_have_a_post_response(self):
-        response = self.client.post("/", data={"item_text": "A new list item"})
-        self.assertEqual(Item.objects.count(), 1)
-        newItem = Item.objects.first()
-        self.assertEqual(newItem.text, "A new list item")
+    # def test_can_have_a_post_response(self):
+    #     response = self.client.post("/", data={"item_text": "A new list item"})
+    #     self.assertEqual(Item.objects.count(), 1)
+    #     newItem = Item.objects.first()
+    #     self.assertEqual(newItem.text, "A new list item")
+    #
+    #     self.assertEqual(response.status_code, 302)
+    #     self.assertEqual(response["location"], "/lists/only-single/")
 
-        self.assertEqual(response.status_code, 302)
-        self.assertEqual(response["location"], "/lists/only-single/")
-
-    def display_all_items(self):
-        Item.objects.create(text="item 1")
-        Item.objects.create(text="item 2")
-
-        response = self.client.get("/")
-
-        self.assertIn("item 1", response.content.decode())
-        self.assertIn("item 2", response.content.decode())
+    # def display_all_items(self):
+    #     Item.objects.create(text="item 1")
+    #     Item.objects.create(text="item 2")
+    #
+    #     response = self.client.get("/")
+    #
+    #     self.assertIn("item 1", response.content.decode())
+    #     self.assertIn("item 2", response.content.decode())
 
 
 class ItemModelTest(TestCase):
@@ -79,10 +79,10 @@ class NewListTest(TestCase):
         self.dictItemText = dict(item_text=self.itemText)
 
     def test_can_save_a_POST_request(self):
-        response = self.client.post("/list/new", data=self.dictItemText)
+        response = self.client.post("/lists/new", data=self.dictItemText)
         self.assertEqual(Item.objects.count(), 1)
         self.assertEqual(Item.objects.first().text, self.itemText)
 
     def test_redirects_after_POST(self):
-        response = self.client.post("/list/new", data=self.dictItemText)
+        response = self.client.post("/lists/new", data=self.dictItemText)
         self.assertRedirects(response, "/lists/only-single/")

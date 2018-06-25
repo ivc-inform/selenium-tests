@@ -17,3 +17,7 @@ def home_page(request):
 
 def view_list(request):
     return render(request, "list.html", dict(items=Item.objects.all()))
+
+
+def new_list(request):
+    return redirect("/lists/only-single/")
