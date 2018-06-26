@@ -2,3 +2,5 @@ pip install -r ./requirements.txt
 pip freeze > requirements.txt
 
 grep -E "class|def" lists/tests.py
+
+python manage.py test functional_tests
