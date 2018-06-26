@@ -1,3 +1,4 @@
+import os
 import time
 
 from django.contrib.staticfiles.testing import StaticLiveServerTestCase
@@ -16,6 +17,12 @@ class NewVisitorTest(StaticLiveServerTestCase):
             "Купить молоко"
         ]
         self.browser = webdriver.Firefox()
+        staging_server = os.environ.get("STAGING_SERVER")
+        staging_port = os.environ.get("STAGING_PORT")
+        if staging_server:
+            self.live_server_url = f"http://{staging_server}"
+        if  staging_port:
+            self.live_server_url += f":{staging_port}"
         self.MAX_WAIT = 10
         self.MIN_WAIT = 0.1
 
