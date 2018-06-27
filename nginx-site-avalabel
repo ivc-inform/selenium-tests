@@ -1,0 +1,13 @@
+server {
+       listen 81;
+
+       server_name dev.db-support.ru;
+
+       location /static {
+               alias /home/uandrew/nginx-hosting/sites/dev.db-support.ru/static;
+       }
+
+       location / {
+               proxy_pass http://localhost:8000;
+       }
+}
