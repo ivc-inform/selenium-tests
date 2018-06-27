@@ -1,0 +1,11 @@
+[Unit]
+Description=Gunicorn server for dev.db-support.ru
+
+[Service]
+Restart=on-failure
+User=uandrew
+WorkingDirectory=/home/uandrew/nginx-hosting/sites/dev.db-support.ru/selenium-tests
+ExecStart=/home/uandrew/.virtualenvs/selenium-tests/bin/gunicorn --bind unix:/tmp/dev.db-support.ru.socket project.wsgi:application
+
+[Install]
+WantedBy=multi-user.target
