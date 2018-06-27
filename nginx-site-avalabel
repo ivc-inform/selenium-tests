@@ -7,7 +7,12 @@ server {
                alias /home/uandrew/nginx-hosting/sites/dev.db-support.ru/static;
        }
 
+       #location / {
+       #        proxy_pass http://localhost:8000;
+       #}
+
        location / {
-               proxy_pass http://localhost:8000;
+               proxy_set_header Host $host;
+               proxy_pass http://unix:/tmp/dev.db-support.ru.socket;
        }
 }
