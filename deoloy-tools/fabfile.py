@@ -88,6 +88,7 @@ def makeService():
         sudo(f"ln -s /etc/nginx/sites-available/{siteName} /etc/nginx/sites-enabled/{siteName}")
     if exists(f"/etc/nginx/sites-enabled/default"):
         sudo("rm /etc/nginx/sites-enabled/default")
+        sudo("systemctl reload nginx")
 
     servisePath = f"/etc/systemd/system/{siteName}.service"
     sudo(f"cp {sourceFolder}/deoloy-tools/gunicorn-SITENAME.service {servisePath}")
