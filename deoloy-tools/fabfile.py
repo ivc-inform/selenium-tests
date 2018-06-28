@@ -19,10 +19,10 @@ def deploy():
     # sudo("apt update")
     # sudo("apt install nginx git python3.6 python3.6-venv git")
     #
-    createDirectoryStructure(siteFolder)
-    getSources(sourceFolder)
-    updateSetting(sourceFolder, siteName)
-
+    # createDirectoryStructure(siteFolder)
+    # getSources(sourceFolder)
+    # updateSetting(sourceFolder, siteName)
+    updateVirtualEnv(sourceFolder)
 
 def createDirectoryStructure(siteFolder):
     for subfolder in ("database", "source", "static", "virtualenv"):
@@ -52,6 +52,13 @@ def updateSetting(sourceFolder, siteName):
         key = "".join(random.SystemRandom().choice(chars) for _ in range(50))
         append(secretKeyFile, f'SECRET_KEY="{key}"')
     append(settingPath, '\nfrom .secret_key import SECRET_KEY')
+
+def updateVirtualEnv(sourceFolder):
+    virtualEnvFolder = f"{sourceFolder}/../virtualenv"
+    if not exists(f"{virtualEnvFolder}/bin/pip"):
+        run(f"python3.6 -m venv {virtualEnvFolder}")
+    run(f"{virtualEnvFolder}/bin/pip3.6 install -r {sourceFolder}/requirements.txt")
+
 
 # if __name__ == "__main__":
 #     sys.argv[0] = re.sub(r'(-script\.pyw?|\.exe)?$', '', sys.argv[0])
