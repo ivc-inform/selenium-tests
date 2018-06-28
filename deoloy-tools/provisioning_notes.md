@@ -31,8 +31,10 @@ SITENAME\
 1. source ../virtualenv/bin/activate
 1. pip install -r requirements.txt   
 1. python manage.py migrate
+1. python manage.py collectstatic
 1. создать файл в каталоге /etc/nginx/sites-available с именем SITENAME из файла nginx-site-avalabel.conf заменив в нем SITENAME на настоящее имя
 1. сделать ссылку sudo ln -s /etc/nginx/sites-available/SITENAME /etc/nginx/sites-enabled/SITENAME
+1. удалить дефолтную конфигурацию 
 
 ####Конфигурация виртуальног узла Nginx   
 * см nginx-site-avalabel.conf
