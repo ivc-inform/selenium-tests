@@ -4,8 +4,8 @@ Description=Gunicorn server for SITENAME
 [Service]
 Restart=on-failure
 User=uandrew
-WorkingDirectory=/home/uandrew/nginx-hosting/sites/SITENAME/selenium-tests
-ExecStart=/home/uandrew/.virtualenvs/selenium-tests/bin/gunicorn --bind unix:/tmp/SITENAME.socket project.wsgi:application
+WorkingDirectory=/home/uandrew/nginx/sites/SITENAME/selenium-tests
+ExecStart=gunicorn --bind unix:/tmp/SITENAME.socket project.wsgi:application
 
 [Install]
 WantedBy=multi-user.target
