@@ -7,7 +7,7 @@ python manage.py test functional_tests
 python manage.py collectstatic
 
 gunicorn project.wsgi:application
-gunicorn --bind unix:/tmp/dev.db-support.ru.socket project.wsgi:application
+gunicorn --bind unix:/tmp/192.168.0.104.socket project.wsgi:application
 
 sudo systemctl daemon-reload
 sudo systemctl enable gunicorn-dev.db-support.ru

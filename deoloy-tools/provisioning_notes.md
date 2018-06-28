@@ -35,6 +35,7 @@ SITENAME\
 1. создать файл в каталоге /etc/nginx/sites-available с именем SITENAME из файла nginx-site-avalabel.conf заменив в нем SITENAME на настоящее имя
 1. сделать ссылку sudo ln -s /etc/nginx/sites-available/SITENAME /etc/nginx/sites-enabled/SITENAME
 1. удалить дефолтную конфигурацию 
+1. выполняем gunicorn --bind unix:/tmp/SITENAME.socket project.wsgi:application 
 
 ####Конфигурация виртуальног узла Nginx   
 * см nginx-site-avalabel.conf
