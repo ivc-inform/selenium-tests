@@ -14,7 +14,7 @@ def deploy():
     siteFolder = f"/home/{env.user}/nginx/sites/{siteName}"
     sourceFolder = f"{siteFolder}/source"
 
-    sudo("apt install apache2-utils")
+    sudo("apt install -y apache2-utils")
     sudo("add-apt-repository --yes ppa:fkrull/deadsnakes")
     sudo("apt update")
     sudo("apt install -y nginx git python3.6 python3.6-venv git")
@@ -71,6 +71,8 @@ def updateDatabase(sourceFolder):
 def updateStatic(sourceFolder):
     run(f"cd {sourceFolder} && ../virtualenv/bin/python3.6 manage.py collectstatic")
 
+
+# fab -u uandrew -p dfqc2 --sudo-password=dfqc2 -H 192.168.0.104 makeService
 
 def makeService():
     siteName = env.host
