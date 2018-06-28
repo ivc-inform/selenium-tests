@@ -77,7 +77,8 @@ def updateVirtualEnv(sourceFolder):
     virtualEnvFolder = f"{sourceFolder}/../virtualenv"
     if not exists(f"{virtualEnvFolder}/bin/pip"):
         run(f"python3.6 -m venv {virtualEnvFolder}")
-    run(f"{virtualEnvFolder}/bin/pip3.6 install -r {sourceFolder}/requirements.txt")
+    run(f"{virtualEnvFolder}/bin/pip install --upgrade pip")
+    run(f"{virtualEnvFolder}/bin/pip install -r {sourceFolder}/requirements.txt")
 
 
 def updateDatabase(sourceFolder):
