@@ -19,8 +19,8 @@ def deploy():
     # sudo("apt update")
     # sudo("apt install nginx git python3.6 python3.6-venv git")
     #
-    # createDirectoryStructure(siteFolder)
-    # getSources(sourceFolder)
+    createDirectoryStructure(siteFolder)
+    getSources(sourceFolder)
     updateSetting(sourceFolder, siteName)
 
 
