@@ -88,7 +88,7 @@ def makeService():
         sudo("rm /etc/nginx/sites-enabled/default")
 
     servisePath = f"/etc/systemd/system/{siteName}.service"
-    sudo(f"cp {sourceFolder}/deoloy-tools/gunicorn-dev.db-support.ru.service {servisePath}")
+    sudo(f"cp {sourceFolder}/deoloy-tools/gunicorn-SITENAME.service {servisePath}")
     sed(servisePath, "SITENAME", siteName, use_sudo=True)
     sudo("systemctl daemon-reload")
     sudo(f"systemctl enable {siteName}")
