@@ -15,7 +15,7 @@
 
 ####Развертывание структуры файлов
 /home/nginx/sites\
-site_url\
+SITENAME\
      database\
      source\
      static\
@@ -23,14 +23,16 @@ site_url\
      
 ######делаем:
 
-1. cd ~/nginx/sites/site_url/source 
+1. cd ~/nginx/sites/SITENAME/source 
 1. python3.6 -m venv ../virtualenv/ 
-1. git clone https://github.com/ivc-inform/selenium-tests.git ~/nginx/sites/192.168.0.104/source/
+1. git clone https://github.com/ivc-inform/selenium-tests.git ~/nginx/sites/SITENAME/source/
 1. source ../virtualenv/bin/activate
 1. pip install --upgrade pip
 1. source ../virtualenv/bin/activate
 1. pip install -r requirements.txt   
 1. python manage.py migrate
+1. создать файл в каталоге /etc/nginx/sites-available с именем SITENAME из файла nginx-site-avalabel.conf заменив в нем SITENAME на настоящее имя
+1. сделать ссылку sudo ln -s /etc/nginx/sites-available/SITENAME /etc/nginx/sites-enabled/SITENAME
 
 ####Конфигурация виртуальног узла Nginx   
 * см nginx-site-avalabel.conf
