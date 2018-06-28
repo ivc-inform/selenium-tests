@@ -23,7 +23,8 @@ def deploy():
     # getSources(sourceFolder)
     # updateSetting(sourceFolder, siteName)
     # updateVirtualEnv(sourceFolder)
-    updateDatabase(sourceFolder)
+    # updateDatabase(sourceFolder)
+    updateStatic(sourceFolder)
 
 def createDirectoryStructure(siteFolder):
     for subfolder in ("database", "source", "static", "virtualenv"):
@@ -62,6 +63,9 @@ def updateVirtualEnv(sourceFolder):
 
 def updateDatabase(sourceFolder):
     run(f"cd {sourceFolder} && ../virtualenv/bin/python3.6 manage.py migrate --noinput")
+
+def updateStatic(sourceFolder):
+    run(f"cd {sourceFolder} && ../virtualenv/bin/python3.6 manage.py collectstatic")
 
 # if __name__ == "__main__":
 #     sys.argv[0] = re.sub(r'(-script\.pyw?|\.exe)?$', '', sys.argv[0])
