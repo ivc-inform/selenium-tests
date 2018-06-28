@@ -21,9 +21,11 @@ site_url\
      static\
      virtualenv\
      
-делаем\
-cd ~/nginx/sites/site_url/source \
-python3.6 -m venv ../virtualenv/
+######делаем:
+
+1. cd ~/nginx/sites/site_url/source 
+2. python3.6 -m venv ../virtualenv/ 
+3. git clone https://github.com/ivc-inform/selenium-tests.git
 
 ####Конфигурация виртуальног узла Nginx   
 * см nginx-site-avalabel.conf
