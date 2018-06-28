@@ -9,7 +9,7 @@
 
 ####Обновление пакетов 
 #####для Ubuntu
-    * sudo add-apt-repository ppa:fkrull/deadsnakes
+    * sudo add-apt-repository --yes ppa:fkrull/deadsnakes
     * sudo apt update
     * sudo apt install nginx git python3.6 python3.6-venv git
 
