@@ -22,7 +22,8 @@ def deploy():
     # createDirectoryStructure(siteFolder)
     # getSources(sourceFolder)
     # updateSetting(sourceFolder, siteName)
-    updateVirtualEnv(sourceFolder)
+    # updateVirtualEnv(sourceFolder)
+    updateDatabase(sourceFolder)
 
 def createDirectoryStructure(siteFolder):
     for subfolder in ("database", "source", "static", "virtualenv"):
@@ -59,6 +60,8 @@ def updateVirtualEnv(sourceFolder):
         run(f"python3.6 -m venv {virtualEnvFolder}")
     run(f"{virtualEnvFolder}/bin/pip3.6 install -r {sourceFolder}/requirements.txt")
 
+def updateDatabase(sourceFolder):
+    run(f"cd {sourceFolder} && ../virtualenv/bin/python3.6 manage.py migrate --noinput")
 
 # if __name__ == "__main__":
 #     sys.argv[0] = re.sub(r'(-script\.pyw?|\.exe)?$', '', sys.argv[0])
