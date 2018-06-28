@@ -9,6 +9,7 @@ REPO_URL = "https://github.com/ivc-inform/selenium-tests.git"
 
 
 # fab -u uandrew -p dfqc2 --sudo-password=dfqc2 -H 192.168.0.104 deploy
+# fab -u uandrew -p dfqc2 --sudo-password=dfqc2 -H 192.168.0.104 reDeploy
 # fab -u uandrew -p dfqc2 --sudo-password=dfqc2 -H 192.168.0.104 makeService
 
 def deploy():
@@ -84,7 +85,7 @@ def updateDatabase(sourceFolder):
 
 
 def updateStatic(sourceFolder):
-    run(f"cd {sourceFolder} && ../virtualenv/bin/python3.6 manage.py collectstatic")
+    run(f"cd {sourceFolder} && ../virtualenv/bin/python3.6 manage.py collectstatic --noinput")
 
 
 def makeService():
