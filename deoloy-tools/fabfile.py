@@ -22,7 +22,7 @@ def deploy():
     sudo("apt install -y nginx git python3.6 python3.6-venv git")
 
     deployProcs(siteFolder, siteName, sourceFolder)
-    serviceProcs(siteName)
+    serviceProcs(siteName, sourceFolder)
 
 
 def deployProcs(siteFolder, siteName, sourceFolder):
@@ -40,6 +40,7 @@ def reDeploy():
     sourceFolder = f"{siteFolder}/source"
 
     deployProcs(siteFolder, siteName, sourceFolder)
+
 
 def createDirectoryStructure(siteFolder):
     for subfolder in ("database", "source", "static", "virtualenv"):
@@ -85,15 +86,16 @@ def updateDatabase(sourceFolder):
 def updateStatic(sourceFolder):
     run(f"cd {sourceFolder} && ../virtualenv/bin/python3.6 manage.py collectstatic")
 
+
 def makeService():
     siteName = env.host
     siteFolder = f"/home/{env.user}/nginx/sites/{siteName}"
     sourceFolder = f"{siteFolder}/source"
 
-    serviceProcs(siteName)
+    serviceProcs(siteName, sourceFolder)
 
 
-def serviceProcs(siteName):
+def serviceProcs(siteName, sourceFolder):
     sitesAvailableCfg = f"/etc/nginx/sites-available/{siteName}"
     sudo(f"cp {sourceFolder}/deoloy-tools/nginx-site-avalabel.conf {sitesAvailableCfg}")
     sed(sitesAvailableCfg, "SITENAME", siteName, use_sudo=True)
@@ -113,4 +115,4 @@ def serviceProcs(siteName):
 
 
 if __name__ == "__main__":
-  os.chdir("")
+    os.chdir("")
