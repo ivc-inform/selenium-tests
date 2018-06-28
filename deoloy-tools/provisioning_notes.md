@@ -38,6 +38,7 @@ SITENAME\
 1. скопировать файл gunicorn-dev.db-support.ru.service в /etc/systemd/system переименовав его в SITENAME.service и заменит в нем все SITENAME на настоящее имя
 1. выполнить sudo systemctl daemon-reload
 1. выполнить sudo systemctl enable SITENAME
+1. выполнить sudo systemctl start SITENAME
 
 ####Конфигурация виртуальног узла Nginx   
 * см nginx-site-avalabel.conf
