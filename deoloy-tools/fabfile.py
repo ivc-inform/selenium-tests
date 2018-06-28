@@ -2,12 +2,12 @@ import random
 
 from fabric.api import env
 from fabric.contrib.files import exists, sed, append
-from fabric.operations import run, local, sudo
+from fabric.operations import run, local
 
 REPO_URL = "https://github.com/ivc-inform/selenium-tests.git"
 
 
-# ab -u uandrew -p dfqc2 --sudo-password=dfqc2 -H 192.168.0.104 deploy
+# fab -u uandrew -p dfqc2 --sudo-password=dfqc2 -H 192.168.0.104 deploy
 
 def deploy():
     siteName = env.host
@@ -41,18 +41,18 @@ def getSources(sourceFolder):
 
 def updateSetting(sourceFolder, siteName):
     settingPath = f"{sourceFolder}/project/settings.py"
-    sed(settingPath, "DEBUG=True", "DEBUG=False")
-    sed(settingPath, "ALLOWED_HOSTS=.+$", f"ALLOWED_HOSTS=[{siteName}]")
+    if not exists(settingPath):
+        raise Exception(f"File: {secretKeyFile} not exists.")
+    sed(settingPath, "DEBUG = True", "DEBUG = False")
+    sed(settingPath, "ALLOWED_HOSTS =.+$", f'ALLOWED_HOSTS = ["{siteName}"]')
 
     secretKeyFile = f"{sourceFolder}/project/secret_key.py"
     if not exists(secretKeyFile):
         chars = "abcdefghijklmnopqrstuvwxyz0123456789!@#$%^&*(-_=+)"
         key = "".join(random.SystemRandom().choice(chars) for _ in range(50))
-        append(secretKeyFile, f"SECRET_KEY={key}")
-    append(settingPath, "\nfrom .secret_key import SECRET_KEY")
+        append(secretKeyFile, f'SECRET_KEY="{key}"')
+    append(settingPath, '\nfrom .secret_key import SECRET_KEY')
 
-
-if __name__ == "__main__":
-    chars = "abcdefghijklmnopqrstuvwxyz0123456789!@#$%^&*(-_=+)"
-    key = "".join(random.SystemRandom().choice(chars) for _ in range(50))
-    print(key)
+# if __name__ == "__main__":
+#     sys.argv[0] = re.sub(r'(-script\.pyw?|\.exe)?$', '', sys.argv[0])
+#     sys.exit(main())
