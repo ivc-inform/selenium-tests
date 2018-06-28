@@ -1,3 +1,4 @@
+import os
 import random
 
 from fabric.api import env
@@ -8,6 +9,7 @@ REPO_URL = "https://github.com/ivc-inform/selenium-tests.git"
 
 
 # fab -u uandrew -p dfqc2 --sudo-password=dfqc2 -H 192.168.0.104 deploy
+# fab -u uandrew -p dfqc2 --sudo-password=dfqc2 -H 192.168.0.104 makeService
 
 def deploy():
     siteName = env.host
@@ -19,6 +21,11 @@ def deploy():
     sudo("apt update")
     sudo("apt install -y nginx git python3.6 python3.6-venv git")
 
+    deployProcs(siteFolder, siteName, sourceFolder)
+    serviceProcs(siteName)
+
+
+def deployProcs(siteFolder, siteName, sourceFolder):
     createDirectoryStructure(siteFolder)
     getSources(sourceFolder)
     updateSetting(sourceFolder, siteName)
@@ -26,6 +33,13 @@ def deploy():
     updateDatabase(sourceFolder)
     updateStatic(sourceFolder)
 
+
+def reDeploy():
+    siteName = env.host
+    siteFolder = f"/home/{env.user}/nginx/sites/{siteName}"
+    sourceFolder = f"{siteFolder}/source"
+
+    deployProcs(siteFolder, siteName, sourceFolder)
 
 def createDirectoryStructure(siteFolder):
     for subfolder in ("database", "source", "static", "virtualenv"):
@@ -71,16 +85,16 @@ def updateDatabase(sourceFolder):
 def updateStatic(sourceFolder):
     run(f"cd {sourceFolder} && ../virtualenv/bin/python3.6 manage.py collectstatic")
 
-
-# fab -u uandrew -p dfqc2 --sudo-password=dfqc2 -H 192.168.0.104 makeService
-
 def makeService():
     siteName = env.host
     siteFolder = f"/home/{env.user}/nginx/sites/{siteName}"
     sourceFolder = f"{siteFolder}/source"
 
-    sitesAvailableCfg = f"/etc/nginx/sites-available/{siteName}"
+    serviceProcs(siteName)
 
+
+def serviceProcs(siteName):
+    sitesAvailableCfg = f"/etc/nginx/sites-available/{siteName}"
     sudo(f"cp {sourceFolder}/deoloy-tools/nginx-site-avalabel.conf {sitesAvailableCfg}")
     sed(sitesAvailableCfg, "SITENAME", siteName, use_sudo=True)
     sed(sitesAvailableCfg, "PORT", "80", use_sudo=True)
@@ -89,7 +103,6 @@ def makeService():
     if exists(f"/etc/nginx/sites-enabled/default"):
         sudo("rm /etc/nginx/sites-enabled/default")
         sudo("systemctl reload nginx")
-
     servisePath = f"/etc/systemd/system/{siteName}.service"
     sudo(f"cp {sourceFolder}/deoloy-tools/gunicorn-SITENAME.service {servisePath}")
     sed(servisePath, "SITENAME", siteName, use_sudo=True)
@@ -98,6 +111,6 @@ def makeService():
     sudo(f"systemctl start {siteName}")
     sudo(f"systemctl status {siteName}")
 
-# if __name__ == "__main__":
-#     sys.argv[0] = re.sub(r'(-script\.pyw?|\.exe)?$', '', sys.argv[0])
-#     sys.exit(main())
+
+if __name__ == "__main__":
+  os.chdir("")
