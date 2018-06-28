@@ -7,7 +7,7 @@ from fabric.operations import run, local, sudo
 REPO_URL = "https://github.com/ivc-inform/selenium-tests.git"
 
 
-# fab -u uandrew -p dfqc2 --sudo-password=dfqc2 deploy:host=192.168.0.104
+# ab -u uandrew -p dfqc2 --sudo-password=dfqc2 -H 192.168.0.104 deploy
 
 def deploy():
     siteName = env.host
