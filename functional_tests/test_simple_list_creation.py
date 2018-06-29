@@ -16,10 +16,10 @@ class NewVisitorTest(FunctionalTest):
         self.assertIn('To-Do', header_text)
 
         self.imputToDo(self.toDoList[0])
-        self.checkRowInToDoTabel(f"1: {self.toDoList[0]}")
+        self.wait_for_row_in_list_table(f"1: {self.toDoList[0]}")
 
         self.imputToDo(self.toDoList[1])
-        self.checkRowInToDoTabel(f"2: {self.toDoList[1]}")
+        self.wait_for_row_in_list_table(f"2: {self.toDoList[1]}")
 
     def test_multiple_users_can_start_lists_at_different_urls(self):
         self.browser.get(self.live_server_url)
@@ -30,7 +30,7 @@ class NewVisitorTest(FunctionalTest):
         self.assertIn('To-Do', header_text)
 
         self.imputToDo(self.toDoList[0])
-        self.checkRowInToDoTabel(f"1: {self.toDoList[0]}")
+        self.wait_for_row_in_list_table(f"1: {self.toDoList[0]}")
 
         edith_list_url = self.browser.current_url
         self.assertRegex(edith_list_url, "/lists/.+")
@@ -44,7 +44,7 @@ class NewVisitorTest(FunctionalTest):
         self.assertNotIn(self.toDoList[1], page_text)
 
         self.imputToDo(self.toDoList[2])
-        self.checkRowInToDoTabel(f"1: {self.toDoList[2]}")
+        self.wait_for_row_in_list_table(f"1: {self.toDoList[2]}")
 
         francis_list_url = self.browser.current_url
         self.assertRegex(francis_list_url, "/lists/.+")

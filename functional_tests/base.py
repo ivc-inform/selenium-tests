@@ -35,7 +35,7 @@ class FunctionalTest(StaticLiveServerTestCase):
         inputbox.send_keys(toDo)
         inputbox.send_keys(Keys.ENTER)
 
-    def checkRowInToDoTabel(self, rowText):
+    def wait_for_row_in_list_table(self, rowText):
         startTime = time.time()
         while True:
             try:
