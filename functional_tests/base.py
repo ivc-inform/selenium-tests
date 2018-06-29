@@ -22,7 +22,7 @@ class FunctionalTest(StaticLiveServerTestCase):
             self.live_server_url = f"http://{staging_server}"
         if staging_port:
             self.live_server_url += f":{staging_port}"
-        self.MAX_WAIT = 10
+        self.MAX_WAIT = 3
         self.MIN_WAIT = 0.1
 
     def tearDown(self):
