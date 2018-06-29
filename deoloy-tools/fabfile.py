@@ -20,6 +20,7 @@ def deploy():
     sudo("apt install -y apache2-utils")
     sudo("add-apt-repository --yes ppa:fkrull/deadsnakes")
     sudo("apt update")
+    sudo("apt dist-upgrade -y")
     sudo("apt install -y nginx git python3.6 python3.6-venv git")
 
     deployProcs(siteFolder, siteName, sourceFolder)
