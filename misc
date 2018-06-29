@@ -3,6 +3,7 @@ pip freeze > requirements.txt
 
 grep -E "class|def" lists/tests.py
 
+
 python manage.py test functional_tests
 python manage.py collectstatic
 
