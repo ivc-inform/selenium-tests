@@ -8,9 +8,9 @@ from fabric.operations import run, local, sudo
 REPO_URL = "https://github.com/ivc-inform/selenium-tests.git"
 
 
-# fab -u uandrew -p dfqc2 --sudo-password=dfqc2 -H 192.168.0.104 deploy
-# fab -u uandrew -p dfqc2 --sudo-password=dfqc2 -H 192.168.0.104 reDeploy
-# fab -u uandrew -p dfqc2 --sudo-password=dfqc2 -H 192.168.0.104 makeService
+# fab -u uandrew -p dfqc2 --sudo-password=dfqc2 -H 192.168.0.100 deploy
+# fab -u uandrew -p dfqc2 --sudo-password=dfqc2 -H 192.168.0.100 reDeploy
+# fab -u uandrew -p dfqc2 --sudo-password=dfqc2 -H 192.168.0.100 makeService
 
 def deploy():
     siteName = env.host
