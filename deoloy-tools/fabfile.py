@@ -42,7 +42,7 @@ def reDeploy():
     sourceFolder = f"{siteFolder}/source"
 
     deployProcs(siteFolder, siteName, sourceFolder)
-    sudo(f"systemctl reload {siteName}")
+    sudo(f"systemctl restart {siteName}")
     sudo(f"systemctl status {siteName}")
 
 
