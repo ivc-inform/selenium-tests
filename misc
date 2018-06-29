@@ -6,9 +6,4 @@ grep -E "class|def" lists/tests.py
 python manage.py test functional_tests
 python manage.py collectstatic
 
-gunicorn project.wsgi:application
-gunicorn --bind unix:/tmp/192.168.0.104.socket project.wsgi:application
-
-sudo systemctl daemon-reload
-sudo systemctl enable gunicorn-dev.db-support.ru
-sudo systemctl start gunicorn-dev.db-support.ru
+python manage.py test functional_tests.tests_list_item_validation
