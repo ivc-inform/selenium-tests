@@ -7,8 +7,7 @@ from selenium.common.exceptions import WebDriverException
 from selenium.webdriver.common.keys import Keys
 
 
-class NewVisitorTest(StaticLiveServerTestCase):
-
+class FunctionalTest(StaticLiveServerTestCase):
     def setUp(self):
         "Установка"
         self.toDoList = [
@@ -21,7 +20,7 @@ class NewVisitorTest(StaticLiveServerTestCase):
         staging_port = os.environ.get("STAGING_PORT")
         if staging_server:
             self.live_server_url = f"http://{staging_server}"
-        if  staging_port:
+        if staging_port:
             self.live_server_url += f":{staging_port}"
         self.MAX_WAIT = 10
         self.MIN_WAIT = 0.1
@@ -50,8 +49,10 @@ class NewVisitorTest(StaticLiveServerTestCase):
             else:
                 return
 
-    def test_can_start_a_list_for_one_user(self):
 
+class NewVisitorTest(FunctionalTest):
+
+    def test_can_start_a_list_for_one_user(self):
         self.browser.get(self.live_server_url)
 
         self.assertIn('To-Do', self.browser.title)
@@ -66,7 +67,6 @@ class NewVisitorTest(StaticLiveServerTestCase):
         self.checkRowInToDoTabel(f"2: {self.toDoList[1]}")
 
     def test_multiple_users_can_start_lists_at_different_urls(self):
-
         self.browser.get(self.live_server_url)
 
         self.assertIn('To-Do', self.browser.title)
