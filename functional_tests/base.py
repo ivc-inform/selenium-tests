@@ -22,7 +22,7 @@ class FunctionalTest(StaticLiveServerTestCase):
             self.live_server_url = f"http://{staging_server}"
         if staging_port:
             self.live_server_url += f":{staging_port}"
-        self.MAX_WAIT = 3
+        self.MAX_WAIT = 10
         self.MIN_WAIT = 0.1
 
     def tearDown(self):
@@ -51,6 +51,7 @@ class FunctionalTest(StaticLiveServerTestCase):
 
     def wait_forl(self, fn):
         startTime = time.time()
+        step = 1
         while True:
             try:
                 return fn()
@@ -58,6 +59,7 @@ class FunctionalTest(StaticLiveServerTestCase):
                 if time.time() - startTime > self.MAX_WAIT:
                     raise ex
                 time.sleep(self.MIN_WAIT)
+                print(f"waiting step: {step}")
+                step += 1
             else:
                 return
-
