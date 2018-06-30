@@ -25,7 +25,7 @@ def deploy():
     sudo("apt install -y nginx git python3.6 python3.6-venv git")
 
     deployProcs(siteFolder, siteName, sourceFolder)
-    serviceProcs(siteName, sourceFolder)
+    serviceProcs(siteName, sourceFolder, env.user)
 
 
 def deployProcs(siteFolder, siteName, sourceFolder):
@@ -98,22 +98,24 @@ def makeService():
     siteFolder = f"/home/{env.user}/sites/{siteName}"
     sourceFolder = f"{siteFolder}/source"
 
-    serviceProcs(siteName, sourceFolder)
+    serviceProcs(siteName, sourceFolder, env.user)
 
 
-def serviceProcs(siteName, sourceFolder, port = 80):
+def serviceProcs(siteName, sourceFolder, username, port = 80):
     sitesAvailableCfg = f"/etc/nginx/sites-available/{siteName}"
     sudo(f"cp {sourceFolder}/deploy-tools/nginx-site-avalabel.conf {sitesAvailableCfg}")
     sed(sitesAvailableCfg, "SITENAME", siteName, use_sudo=True)
-    sed(sitesAvailableCfg, "PORT", port, use_sudo=True)
+    sed(sitesAvailableCfg, "PORT", str(port), use_sudo=True)
+    sed(sitesAvailableCfg, "USENAME", username, use_sudo=True)
     if not exists(f"/etc/nginx/sites-enabled/{siteName}"):
         sudo(f"ln -s /etc/nginx/sites-available/{siteName} /etc/nginx/sites-enabled/{siteName}")
     if exists(f"/etc/nginx/sites-enabled/default"):
         sudo("rm /etc/nginx/sites-enabled/default")
         sudo("systemctl reload nginx")
     servisePath = f"/etc/systemd/system/{siteName}.service"
-    sudo(f"cp {sourceFolder}/deoloy-tools/gunicorn-SITENAME.service {servisePath}")
+    sudo(f"cp {sourceFolder}/deploy-tools/gunicorn-SITENAME.service {servisePath}")
     sed(servisePath, "SITENAME", siteName, use_sudo=True)
+    sed(servisePath, "USERNAME", username, use_sudo=True)
     sudo("systemctl daemon-reload")
     sudo(f"systemctl enable {siteName}")
     sudo(f"systemctl start {siteName}")

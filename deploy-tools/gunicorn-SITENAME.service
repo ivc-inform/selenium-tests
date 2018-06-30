@@ -3,9 +3,9 @@ Description=Gunicorn server for SITENAME
 
 [Service]
 Restart=on-failure
-User=uandrew
-WorkingDirectory=/home/uandrew/nginx/sites/SITENAME/source
-ExecStart=/home/uandrew/nginx/sites/SITENAME/virtualenv/bin/gunicorn --bind unix:/tmp/SITENAME.socket project.wsgi:application
+User=USERNAME
+WorkingDirectory=/home/USERNAME/sites/SITENAME/source
+ExecStart=/home/USERNAME/sites/SITENAME/virtualenv/bin/gunicorn --bind unix:/tmp/SITENAME.socket project.wsgi:application
 
 [Install]
 WantedBy=multi-user.target
