@@ -9,11 +9,11 @@ REPO_URL = "https://github.com/ivc-inform/selenium-tests.git"
 
 
 # fab -u uandrew -p dfqc2 --sudo-password=dfqc2 -H 192.168.0.100 deploy
-# fab -u nginx -p nginx --sudo-password=nginx -H dev.db-support.ru deploy
+# fab -u nginx -p nginx --sudo-password=nginx -H dev.db-support.ru deploy(81)
 # fab -u uandrew -p dfqc2 --sudo-password=dfqc2 -H 192.168.0.100 reDeploy
 # fab -u uandrew -p dfqc2 --sudo-password=dfqc2 -H 192.168.0.100 makeService
 
-def deploy():
+def deploy(port_servise = 80):
     siteName = env.host
     siteFolder = f"/home/{env.user}/sites/{siteName}"
     sourceFolder = f"{siteFolder}/source"
@@ -25,7 +25,7 @@ def deploy():
     sudo("apt install -y nginx git python3.6 python3.6-venv git")
 
     deployProcs(siteFolder, siteName, sourceFolder)
-    serviceProcs(siteName, sourceFolder, env.user)
+    serviceProcs(siteName, sourceFolder, env.user, port_servise)
 
 
 def deployProcs(siteFolder, siteName, sourceFolder):
@@ -93,12 +93,12 @@ def updateStatic(sourceFolder):
     run(f"cd {sourceFolder} && ../virtualenv/bin/python3.6 manage.py collectstatic --noinput")
 
 
-def makeService():
+def makeService(port_servise = 80):
     siteName = env.host
     siteFolder = f"/home/{env.user}/sites/{siteName}"
     sourceFolder = f"{siteFolder}/source"
 
-    serviceProcs(siteName, sourceFolder, env.user)
+    serviceProcs(siteName, sourceFolder, env.user, port_servise)
 
 
 def serviceProcs(siteName, sourceFolder, username, port = 80):
