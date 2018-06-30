@@ -24,7 +24,7 @@ def new_list(request):
         list_.delete()
         return render(request, "home.html", dict(error = 'You can`t have an empty list item.'))
     else:
-        return redirect(f"/{listUrl(list_.id)}")
+        return redirect('view_list', list_.id)
 
 
 def add_item(request, list_id):
