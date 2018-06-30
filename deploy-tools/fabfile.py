@@ -12,6 +12,7 @@ REPO_URL = "https://github.com/ivc-inform/selenium-tests.git"
 # fab -u nginx -p nginx --sudo-password=nginx -H dev.db-support.ru deploy:81
 # fab -u uandrew -p dfqc2 --sudo-password=dfqc2 -H 192.168.0.100 reDeploy
 # fab -u uandrew -p dfqc2 --sudo-password=dfqc2 -H 192.168.0.100 makeService
+# fab -u uandrew -p nginx --sudo-password=nginx -dev.db-support.ru makeService:81
 
 def deploy(port_servise = 80):
     siteName = env.host
