@@ -34,22 +34,6 @@ class ItemModelTest(TestCase):
         self.assertEqual(secondItem.list, list_)
 
 
-class ListViewTest(TestCase):
-    def test_uses_list_templates(self):
-        response = self.client.get(f"/{listUrl()}")
-        self.assertTemplateUsed(response, "list.html")
-
-    def test_display_all_items(self):
-        list_ = List.objects.create()
-        Item.objects.create(text="item 1", list=list_)
-        Item.objects.create(text="item 2", list=list_)
-
-        response = self.client.get(f"/{listUrl()}")
-
-        self.assertContains(response, "item 1")
-        self.assertContains(response, "item 2")
-
-
 class NewListTest(TestCase):
 
     def setUp(self):
@@ -65,37 +49,6 @@ class NewListTest(TestCase):
         response = self.client.post("/lists/new", data=self.dictItemText)
         newList = List.objects.first()
         self.assertRedirects(response, f"/{listUrl(newList.id)}")
-
-
-class ListViewTest(TestCase):
-    def test_users(self):
-        list_ = List.objects.create()
-        response = self.client.get(f"/{listUrl(list_.id)}")
-        self.assertTemplateUsed(response, templateListPage)
-
-    def test_displays_only_items_for_that_list(self):
-        correctList = List.objects.create()
-        Item.objects.create(text="item 1", list=correctList)
-        Item.objects.create(text="item 2", list=correctList)
-
-        anotherList = List.objects.create()
-        Item.objects.create(text="another item 1", list=anotherList)
-        Item.objects.create(text="another item 2", list=anotherList)
-
-        response = self.client.get(f"/{listUrl(correctList.id)}")
-
-        self.assertContains(response, "item 1")
-        self.assertContains(response, "item 2")
-
-        self.assertNotContains(response, "another item 1")
-        self.assertNotContains(response, "another item 2")
-
-    def test_passes_correct_list_to_template(self):
-        other_list = List.objects.create()
-        correct_list = List.objects.create()
-
-        response = self.client.post(f"/lists/{correct_list.id}/")
-        self.assertEqual(response.context["list"], correct_list)
 
 
 class NewItemTest(TestCase):
