@@ -15,7 +15,7 @@ REPO_URL = "https://github.com/ivc-inform/selenium-tests.git"
 
 def deploy():
     siteName = env.host
-    siteFolder = f"/home/{env.user}/nginx/sites/{siteName}"
+    siteFolder = f"/home/{env.user}/sites/{siteName}"
     sourceFolder = f"{siteFolder}/source"
 
     sudo("apt install -y apache2-utils")
@@ -39,7 +39,7 @@ def deployProcs(siteFolder, siteName, sourceFolder):
 
 def reDeploy():
     siteName = env.host
-    siteFolder = f"/home/{env.user}/nginx/sites/{siteName}"
+    siteFolder = f"/home/{env.user}/sites/{siteName}"
     sourceFolder = f"{siteFolder}/source"
 
     deployProcs(siteFolder, siteName, sourceFolder)
@@ -95,7 +95,7 @@ def updateStatic(sourceFolder):
 
 def makeService():
     siteName = env.host
-    siteFolder = f"/home/{env.user}/nginx/sites/{siteName}"
+    siteFolder = f"/home/{env.user}/sites/{siteName}"
     sourceFolder = f"{siteFolder}/source"
 
     serviceProcs(siteName, sourceFolder)
@@ -103,7 +103,7 @@ def makeService():
 
 def serviceProcs(siteName, sourceFolder, port = 80):
     sitesAvailableCfg = f"/etc/nginx/sites-available/{siteName}"
-    sudo(f"cp {sourceFolder}/deoloy-tools/nginx-site-avalabel.conf {sitesAvailableCfg}")
+    sudo(f"cp {sourceFolder}/deploy-tools/nginx-site-avalabel.conf {sitesAvailableCfg}")
     sed(sitesAvailableCfg, "SITENAME", siteName, use_sudo=True)
     sed(sitesAvailableCfg, "PORT", port, use_sudo=True)
     if not exists(f"/etc/nginx/sites-enabled/{siteName}"):
