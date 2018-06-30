@@ -109,15 +109,16 @@ def serviceProcs(siteName, sourceFolder, username, port = 80):
     sed(sitesAvailableCfg, "USENAME", username, use_sudo=True)
     if not exists(f"/etc/nginx/sites-enabled/{siteName}"):
         sudo(f"ln -s /etc/nginx/sites-available/{siteName} /etc/nginx/sites-enabled/{siteName}")
-    if exists(f"/etc/nginx/sites-enabled/default"):
-        sudo("rm /etc/nginx/sites-enabled/default")
-        sudo("systemctl reload nginx")
+    # if exists(f"/etc/nginx/sites-enabled/default"):
+    #     sudo("rm /etc/nginx/sites-enabled/default")
+    #     sudo("systemctl reload nginx")
     servisePath = f"/etc/systemd/system/{siteName}.service"
     sudo(f"cp {sourceFolder}/deploy-tools/gunicorn-SITENAME.service {servisePath}")
     sed(servisePath, "SITENAME", siteName, use_sudo=True)
     sed(servisePath, "USERNAME", username, use_sudo=True)
     sudo("systemctl daemon-reload")
     sudo(f"systemctl enable {siteName}")
+    sudo(f"systemctl stop {siteName}")
     sudo(f"systemctl start {siteName}")
     sudo(f"systemctl status {siteName}")
 
