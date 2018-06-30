@@ -9,6 +9,7 @@ REPO_URL = "https://github.com/ivc-inform/selenium-tests.git"
 
 
 # fab -u uandrew -p dfqc2 --sudo-password=dfqc2 -H 192.168.0.100 deploy
+# fab -u nginx -p nginx --sudo-password=nginx -H dev.db-support.ru deploy
 # fab -u uandrew -p dfqc2 --sudo-password=dfqc2 -H 192.168.0.100 reDeploy
 # fab -u uandrew -p dfqc2 --sudo-password=dfqc2 -H 192.168.0.100 makeService
 
@@ -100,11 +101,11 @@ def makeService():
     serviceProcs(siteName, sourceFolder)
 
 
-def serviceProcs(siteName, sourceFolder):
+def serviceProcs(siteName, sourceFolder, port = 80):
     sitesAvailableCfg = f"/etc/nginx/sites-available/{siteName}"
     sudo(f"cp {sourceFolder}/deoloy-tools/nginx-site-avalabel.conf {sitesAvailableCfg}")
     sed(sitesAvailableCfg, "SITENAME", siteName, use_sudo=True)
-    sed(sitesAvailableCfg, "PORT", "80", use_sudo=True)
+    sed(sitesAvailableCfg, "PORT", port, use_sudo=True)
     if not exists(f"/etc/nginx/sites-enabled/{siteName}"):
         sudo(f"ln -s /etc/nginx/sites-available/{siteName} /etc/nginx/sites-enabled/{siteName}")
     if exists(f"/etc/nginx/sites-enabled/default"):
