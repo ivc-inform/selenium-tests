@@ -9,7 +9,7 @@ REPO_URL = "https://github.com/ivc-inform/selenium-tests.git"
 
 
 # fab -u uandrew -p dfqc2 --sudo-password=dfqc2 -H 192.168.0.100 deploy
-# fab -u nginx -p nginx --sudo-password=nginx -H dev.db-support.ru deploy(81)
+# fab -u nginx -p nginx --sudo-password=nginx -H dev.db-support.ru deploy:81
 # fab -u uandrew -p dfqc2 --sudo-password=dfqc2 -H 192.168.0.100 reDeploy
 # fab -u uandrew -p dfqc2 --sudo-password=dfqc2 -H 192.168.0.100 makeService
 
@@ -106,12 +106,12 @@ def serviceProcs(siteName, sourceFolder, username, port = 80):
     sudo(f"cp {sourceFolder}/deploy-tools/nginx-site-avalabel.conf {sitesAvailableCfg}")
     sed(sitesAvailableCfg, "SITENAME", siteName, use_sudo=True)
     sed(sitesAvailableCfg, "PORT", str(port), use_sudo=True)
-    sed(sitesAvailableCfg, "USENAME", username, use_sudo=True)
+    sed(sitesAvailableCfg, "USERNAME", username, use_sudo=True)
     if not exists(f"/etc/nginx/sites-enabled/{siteName}"):
         sudo(f"ln -s /etc/nginx/sites-available/{siteName} /etc/nginx/sites-enabled/{siteName}")
-    # if exists(f"/etc/nginx/sites-enabled/default"):
-    #     sudo("rm /etc/nginx/sites-enabled/default")
-    #     sudo("systemctl reload nginx")
+    if exists(f"/etc/nginx/sites-enabled/default"):
+        sudo("rm /etc/nginx/sites-enabled/default")
+        sudo("systemctl reload nginx")
     servisePath = f"/etc/systemd/system/{siteName}.service"
     sudo(f"cp {sourceFolder}/deploy-tools/gunicorn-SITENAME.service {servisePath}")
     sed(servisePath, "SITENAME", siteName, use_sudo=True)
