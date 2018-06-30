@@ -1,7 +1,9 @@
+from django.core.exceptions import ValidationError
 from django.test import TestCase
 
 from lists.models import Item, List
 from lists.settings import templateListPage, listUrl, message1
+
 
 class ListViewTest(TestCase):
     def test_users(self):
@@ -33,4 +35,9 @@ class ListViewTest(TestCase):
         response = self.client.post(f"/lists/{correct_list.id}/")
         self.assertEqual(response.context["list"], correct_list)
 
-
+    def test_cannot_save_empty_list_items(self):
+        list_ = List.objects.create()
+        item = Item(list=list_, text="")
+        with self.assertRaises(ValidationError):
+            item.save()
+            item.full_clean()
