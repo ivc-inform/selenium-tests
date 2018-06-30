@@ -51,7 +51,7 @@ class FunctionalTest(StaticLiveServerTestCase):
 
     def wait_forl(self, fn):
         startTime = time.time()
-        step = 1
+        # step = 1
         while True:
             try:
                 return fn()
@@ -59,7 +59,7 @@ class FunctionalTest(StaticLiveServerTestCase):
                 if time.time() - startTime > self.MAX_WAIT:
                     raise ex
                 time.sleep(self.MIN_WAIT)
-                print(f"waiting step: {step}")
-                step += 1
+                # print(f"waiting step: {step}")
+                # step += 1
             else:
                 return
