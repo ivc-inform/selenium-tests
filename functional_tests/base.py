@@ -31,7 +31,7 @@ class FunctionalTest(StaticLiveServerTestCase):
 
     def imputToDo(self, toDo):
         inputbox = self.browser.find_element_by_id("id_new_item")
-        self.assertEqual(inputbox.get_attribute("placeholder"), "Enter a to-do item")
+        self.assertEqual(inputbox.get_attribute("placeholder"), "Введите текст задачи")
         inputbox.send_keys(toDo)
         inputbox.send_keys(Keys.ENTER)
 
