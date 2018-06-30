@@ -119,8 +119,7 @@ def serviceProcs(siteName, sourceFolder, username, port = 80):
     sed(servisePath, "USERNAME", username, use_sudo=True)
     sudo("systemctl daemon-reload")
     sudo(f"systemctl enable {siteName}")
-    sudo(f"systemctl stop {siteName}")
-    sudo(f"systemctl start {siteName}")
+    sudo(f"systemctl restart {siteName}")
     sudo(f"systemctl status {siteName}")
 
 
