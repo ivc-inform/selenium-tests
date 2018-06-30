@@ -1,4 +1,5 @@
 from django.test import TestCase
+from django.utils.html import escape
 
 from lists.models import Item, List
 from lists.settings import templateListPage, listUrl, message1
@@ -49,6 +50,13 @@ class NewListTest(TestCase):
         response = self.client.post("/lists/new", data=self.dictItemText)
         newList = List.objects.first()
         self.assertRedirects(response, f"/{listUrl(newList.id)}")
+
+    def test_validation_errors_are_sent_back_to_home_page_template(self):
+        response = self.client.post("/lists/new", data=dict(item_text=""))
+        self.assertEqual(response.status_code, 200)
+        self.assertTemplateUsed(response, "home.html")
+        expected_error = "You can`t have an empty list item."
+        self.assertContains(response, expected_error)
 
 
 class NewItemTest(TestCase):
