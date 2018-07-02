@@ -32,7 +32,8 @@ class FunctionalTest(StaticLiveServerTestCase):
         self.browser.quit()
 
     def get_item_input_box(self):
-        return self.browser.find_element_by_id("id_text")
+        item = self.browser.find_element_by_id('id_text')
+        return item
 
     def imputToDo(self, toDo):
         inputbox = self.get_item_input_box()

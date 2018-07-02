@@ -7,6 +7,7 @@ from lists.settings import templateListPage, templateHomePage, listUrl
 
 
 def home_page(request):
+    # print(ItemForm().as_p())
     return render(request, templateHomePage, dict(form=ItemForm()))
 
 
