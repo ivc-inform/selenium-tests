@@ -3,6 +3,7 @@ from unittest import skip
 from django.core.exceptions import ValidationError
 from django.test import TestCase
 
+from lists.forms import ItemForm
 from lists.models import Item, List
 from lists.settings import templateListPage, listUrl, message1
 
@@ -67,3 +68,7 @@ class ListViewTest(TestCase):
         response = self.client.post(f"/lists/{correctList.id}/", data=dict(item_text=message1))
         # print(f"response.status_code: {response.status_code}")
         self.assertRedirects(response, f"/lists/{correctList.id}/")
+
+    def test_home_page_uses_item_form(self):
+        response = self.client.get("/")
+        self.assertIsInstance(response.context['form'], ItemForm)
