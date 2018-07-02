@@ -9,10 +9,10 @@ class ItemValidationTest(FunctionalTest):
     @skip
     def test_cannot_add_empty(self):
         self.browser.get(self.live_server_url)
-        self.browser.find_element_by_id("id_new_item").send_keys(Keys.ENTER)
+        self.get_item_input_box().send_keys(Keys.ENTER)
         self.wait_forl(lambda: self.assertEqual(self.browser.find_element_by_css_selector(".has_error").text, "You can`t have en empty list item."))
 
-        inputbox = self.browser.find_element_by_id("id_new_item")
+        inputbox = self.get_item_input_box()
         inputbox.send_keys("Buy milk")
         inputbox.send_keys(Keys.ENTER)
 

@@ -6,6 +6,8 @@ from selenium import webdriver
 from selenium.common.exceptions import WebDriverException
 from selenium.webdriver.common.keys import Keys
 
+from lists.forms import PLACE_HOLDER
+
 
 class FunctionalTest(StaticLiveServerTestCase):
     def setUp(self):
@@ -22,16 +24,20 @@ class FunctionalTest(StaticLiveServerTestCase):
             self.live_server_url = f"http://{staging_server}"
         if staging_port:
             self.live_server_url += f":{staging_port}"
-        self.MAX_WAIT = 10
+        self.MAX_WAIT = 2
         self.MIN_WAIT = 0.1
 
     def tearDown(self):
         "Демонтаж"
         self.browser.quit()
 
+    def get_item_input_box(self):
+        return self.browser.find_element_by_id("id_text")
+
     def imputToDo(self, toDo):
-        inputbox = self.browser.find_element_by_id("id_new_item")
-        self.assertEqual(inputbox.get_attribute("placeholder"), "Введите текст задачи")
+        inputbox = self.get_item_input_box()
+        placeholder_text = inputbox.get_attribute("placeholder")
+        self.assertEqual(placeholder_text, PLACE_HOLDER)
         inputbox.send_keys(toDo)
         inputbox.send_keys(Keys.ENTER)
 

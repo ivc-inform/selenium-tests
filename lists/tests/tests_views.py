@@ -1,6 +1,7 @@
 from django.test import TestCase
 from django.utils.html import escape
 
+from lists.forms import EMPTY_ITEM_ERROR
 from lists.models import Item, List
 from lists.settings import templateListPage, listUrl, message1
 
@@ -55,8 +56,7 @@ class NewListTest(TestCase):
         response = self.client.post("/lists/new", data=dict(item_text=""))
         self.assertEqual(response.status_code, 200)
         self.assertTemplateUsed(response, "home.html")
-        expected_error = "You can`t have an empty list item."
-        self.assertContains(response, expected_error)
+        self.assertContains(response, EMPTY_ITEM_ERROR)
 
     def test_ivalid_list_items_arent_saved(self):
         self.client.post("/lists/new", data=dict(item_text=""))
