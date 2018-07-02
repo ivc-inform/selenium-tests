@@ -13,5 +13,5 @@ class ItemFormTest(TestCase):
 
     def test_form_item_input_has_placeholder_and_css_classes(self):
         form =  ItemForm()
-        self.assertIn('placeholder = "Ввведите задачу"', form.as_p())
-        self.assertIn('class = "form-control input-lg"', form.as_p())
+        self.assertIn('placeholder="Ввведите задачу"', form.as_p())
+        self.assertIn('class="form-control input-lg"', form.as_p())

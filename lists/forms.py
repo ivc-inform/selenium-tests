@@ -1,9 +1,12 @@
-from django.forms import forms, Form, CharField, fields
+from django.forms import Form, CharField, fields
 
 
 class ItemForm(Form):
     item_text = CharField(
-        widget= fields.TextInput(
-            attrs = dict(placeholder="Ввведите задачу")
+        widget=fields.TextInput(
+            attrs={
+                "placeholder": "Ввведите задачу",
+                "class": "form-control input-lg"
+            }
         )
     )
