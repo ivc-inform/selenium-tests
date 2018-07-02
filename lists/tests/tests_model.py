@@ -1,3 +1,5 @@
+from unittest import skip
+
 from django.core.exceptions import ValidationError
 from django.test import TestCase
 
@@ -6,7 +8,7 @@ from lists.settings import templateListPage, listUrl, message1
 
 
 class ListViewTest(TestCase):
-    def test_users(self):
+    def test_uses_list_template(self):
         list_ = List.objects.create()
         response = self.client.get(f"/{listUrl(list_.id)}")
         self.assertTemplateUsed(response, templateListPage)
@@ -32,7 +34,7 @@ class ListViewTest(TestCase):
         other_list = List.objects.create()
         correct_list = List.objects.create()
 
-        response = self.client.post(f"/lists/{correct_list.id}/")
+        response = self.client.get(f"/lists/{correct_list.id}/")
         self.assertEqual(response.context["list"], correct_list)
 
     def test_cannot_save_empty_list_items(self):
@@ -45,3 +47,23 @@ class ListViewTest(TestCase):
     def test_get_absolut_url(self):
         list_ = List.objects.create()
         self.assertEqual(list_.get_absolute_url(), f"/lists/{list_.id}/")
+
+    def test_can_save_a_POST_request_to_an_existing_list(self):
+        other_list = List.objects.create()
+        correct_list = List.objects.create()
+
+        self.client.post(f"/lists/{correct_list.id}/", data=dict(item_text=message1))
+        self.assertEqual(Item.objects.count(), 1)
+
+        newItem = Item.objects.first()
+
+        self.assertEqual(newItem.text, message1)
+        self.assertEqual(newItem.list, correct_list)
+
+    def test_POST_redirects_to_list_view(self):
+        other_list = List.objects.create()
+        correctList = List.objects.create()
+
+        response = self.client.post(f"/lists/{correctList.id}/", data=dict(item_text=message1))
+        # print(f"response.status_code: {response.status_code}")
+        self.assertRedirects(response, f"/lists/{correctList.id}/")
