@@ -52,10 +52,13 @@ class NewListTest(TestCase):
         newList = List.objects.first()
         self.assertRedirects(response, f"/{listUrl(newList.id)}")
 
-    def test_validation_errors_are_sent_back_to_home_page_template(self):
+    def test_for_invalid_input_renders_home_template(self):
         response = self.client.post("/lists/new", data=dict(text=""))
         self.assertEqual(response.status_code, 200)
         self.assertTemplateUsed(response, "home.html")
+
+    def test_validation_errors_are_sent_back_to_home_page_template(self):
+        response = self.client.post("/lists/new", data=dict(text=""))
         self.assertContains(response, EMPTY_ITEM_ERROR)
 
     def test_ivalid_list_items_arent_saved(self):

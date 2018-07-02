@@ -21,13 +21,10 @@ def view_list(request, list_id):
 
 
 def new_list(request):
-    list_ = List.objects.create()
-    item = Item.objects.create(text=request.POST["text"], list=list_)
-    try:
-        item.full_clean()
-        item.save()
-    except ValidationError:
-        list_.delete()
-        return render(request, "home.html", dict(error=EMPTY_ITEM_ERROR))
-    else:
+    form = ItemForm(data=request.POST)
+    if form.is_valid():
+        list_ = List.objects.create()
+        item = Item.objects.create(text=request.POST["text"], list=list_)
         return redirect(list_)
+    else:
+        return render(request, "home.html", dict(form=form))
