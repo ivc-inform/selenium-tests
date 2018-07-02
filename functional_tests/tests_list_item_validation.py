@@ -6,7 +6,7 @@ from .base import FunctionalTest
 
 
 class ItemValidationTest(FunctionalTest):
-    @skip
+
     def test_cannot_add_empty(self):
         self.browser.get(self.live_server_url)
         self.get_item_input_box().send_keys(Keys.ENTER)
