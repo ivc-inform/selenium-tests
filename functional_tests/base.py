@@ -18,6 +18,7 @@ class FunctionalTest(StaticLiveServerTestCase):
             "Купить молоко"
         ]
         self.browser = webdriver.Firefox()
+        # self.browser = webdriver.Chrome()
         staging_server = os.environ.get("STAGING_SERVER")
         staging_port = os.environ.get("STAGING_PORT")
         if staging_server:
@@ -35,8 +36,7 @@ class FunctionalTest(StaticLiveServerTestCase):
         startTime = time.time()
         while True:
             try:
-                item = self.browser.find_element_by_name('id_text')
-                return item
+                return self.browser.find_element_by_id("id_text")
             except (AssertionError, WebDriverException) as ex:
                 if time.time() - startTime > self.MAX_WAIT:
                     raise ex
