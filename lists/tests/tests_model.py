@@ -53,7 +53,7 @@ class ListViewTest(TestCase):
         other_list = List.objects.create()
         correct_list = List.objects.create()
 
-        self.client.post(f"/lists/{correct_list.id}/", data=dict(item_text=message1))
+        self.client.post(f"/lists/{correct_list.id}/", data=dict(text=message1))
         self.assertEqual(Item.objects.count(), 1)
 
         newItem = Item.objects.first()
@@ -65,7 +65,7 @@ class ListViewTest(TestCase):
         other_list = List.objects.create()
         correctList = List.objects.create()
 
-        response = self.client.post(f"/lists/{correctList.id}/", data=dict(item_text=message1))
+        response = self.client.post(f"/lists/{correctList.id}/", data=dict(text=message1))
         # print(f"response.status_code: {response.status_code}")
         self.assertRedirects(response, f"/lists/{correctList.id}/")
 

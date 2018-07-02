@@ -40,7 +40,7 @@ class NewListTest(TestCase):
 
     def setUp(self):
         self.itemText = "A new list item"
-        self.dictItemText = dict(item_text=self.itemText)
+        self.dictItemText = dict(text=self.itemText)
 
     def test_can_save_a_POST_request(self):
         response = self.client.post("/lists/new", data=self.dictItemText)
@@ -53,12 +53,12 @@ class NewListTest(TestCase):
         self.assertRedirects(response, f"/{listUrl(newList.id)}")
 
     def test_validation_errors_are_sent_back_to_home_page_template(self):
-        response = self.client.post("/lists/new", data=dict(item_text=""))
+        response = self.client.post("/lists/new", data=dict(text=""))
         self.assertEqual(response.status_code, 200)
         self.assertTemplateUsed(response, "home.html")
         self.assertContains(response, EMPTY_ITEM_ERROR)
 
     def test_ivalid_list_items_arent_saved(self):
-        self.client.post("/lists/new", data=dict(item_text=""))
+        self.client.post("/lists/new", data=dict(text=""))
         self.assertEqual(List.objects.count(), 0)
         self.assertEqual(Item.objects.count(), 0)
