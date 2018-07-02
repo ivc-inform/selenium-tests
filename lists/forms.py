@@ -1,12 +1,18 @@
-from django.forms import Form, CharField, fields
+from django.forms import ModelForm, TextInput
+
+from lists.models import Item
 
 
-class ItemForm(Form):
-    item_text = CharField(
-        widget=fields.TextInput(
-            attrs={
-                "placeholder": "Ввведите задачу",
-                "class": "form-control input-lg"
-            }
-        )
-    )
+class ItemForm(ModelForm):
+    class Meta:
+        model = Item
+        fields = ("text",)
+
+        widgets = {
+            "text": TextInput(
+                attrs={
+                    "placeholder": "Ввведите задачу",
+                    "class": "form-control input-lg"
+                }
+            )
+        }
