@@ -26,4 +26,4 @@ def new_list(request):
         Item.objects.create(text=request.POST["text"], list=list_)
         return redirect(list_)
     else:
-        return render(request, "home.html", {'form': form})
+        return render(request, "home.html", dict(form=form))

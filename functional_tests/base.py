@@ -32,8 +32,15 @@ class FunctionalTest(StaticLiveServerTestCase):
         self.browser.quit()
 
     def get_item_input_box(self):
-        item = self.browser.find_element_by_name('id_text')
-        return item
+        startTime = time.time()
+        while True:
+            try:
+                item = self.browser.find_element_by_name('id_text')
+                return item
+            except (AssertionError, WebDriverException) as ex:
+                if time.time() - startTime > self.MAX_WAIT:
+                    raise ex
+                time.sleep(self.MIN_WAIT)
 
     def imputToDo(self, toDo):
         inputbox = self.get_item_input_box()
