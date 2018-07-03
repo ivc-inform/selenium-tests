@@ -42,6 +42,18 @@ class NewListTest(TestCase):
         self.itemText = "A new list item"
         self.dictItemText = dict(text=self.itemText)
 
+    def post_ivalid_input(self):
+        list_ = List.objects.create()
+        return self.client.post(f"/lists/{list_.id}/", data=dict(text=""))
+
+    def test_for_invalid_input_nothing_saved_to_db(self):
+        self.post_ivalid_input()
+        self.assertEqual(Item.objects.count(), 0)
+
+    def test_for_invalid_render_list_template(self):
+        response = self.post_ivalid_input()
+        self.assertEqual(response.status_code, 200)
+
     def test_can_save_a_POST_request(self):
         response = self.client.post("/lists/new", data=self.dictItemText)
         self.assertEqual(Item.objects.count(), 1)
