@@ -18,7 +18,7 @@ def view_list(request, list_id):
         form = ItemForm(data=request.POST)
         if form.is_valid():
             Item.objects.create(text=request.POST["text"], list=list_)
-            return redirect(f"/lists/{list_.id}/")
+            return redirect(list_)
     return render(request, templateListPage, dict(list=list_, form=ItemForm()))
 
 

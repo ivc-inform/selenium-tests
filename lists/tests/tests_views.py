@@ -1,7 +1,7 @@
 from django.test import TestCase
 from django.utils.html import escape
 
-from lists.forms import EMPTY_ITEM_ERROR
+from lists.forms import EMPTY_ITEM_ERROR, ItemForm
 from lists.models import Item, List
 from lists.settings import templateListPage, listUrl, message1
 
@@ -53,6 +53,14 @@ class NewListTest(TestCase):
     def test_for_invalid_render_list_template(self):
         response = self.post_ivalid_input()
         self.assertEqual(response.status_code, 200)
+
+    def test_for_invalid_input_passes_form_to_template(self):
+        response = self.post_ivalid_input()
+        self.assertIsInstance(response.context['form'], ItemForm)
+
+    def test_for_invalid_input_shows_error_on_page(self):
+        response = self.post_ivalid_input()
+        self.assertContains(response, EMPTY_ITEM_ERROR)
 
     def test_can_save_a_POST_request(self):
         response = self.client.post("/lists/new", data=self.dictItemText)
