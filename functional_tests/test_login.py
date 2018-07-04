@@ -6,7 +6,7 @@ from selenium.webdriver.common.keys import Keys
 from functional_tests.base import FunctionalTest
 
 TEST_EMAIL = 'test@ivc-info.ru'
-SUBJECT = 'Your login link for Superlists'
+SUBJECT = 'You login link for List To-Do'
 
 
 class LoginTets(FunctionalTest):
@@ -21,8 +21,8 @@ class LoginTets(FunctionalTest):
         self.assertIn(TEST_EMAIL, email.to)
         self.assertEqual(email.subject, SUBJECT)
 
-        self.assertIn("Use this linh to log in", email.body)
-        url_search = re.search(r"http://.+/.+$")
+        self.assertIn("Use this link to log in", email.body)
+        url_search = re.search(r"http://.+/.+$", email.body)
         if not url_search:
             self.fail(f"Could not find url in email body:\n{email.body}")
         url = url_search.group(0)
