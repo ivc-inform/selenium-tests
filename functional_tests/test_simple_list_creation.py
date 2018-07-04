@@ -1,5 +1,3 @@
-from unittest import skip
-
 from selenium import webdriver
 
 from .base import FunctionalTest
