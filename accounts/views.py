@@ -7,8 +7,8 @@ def send_login_email(request):
     email = request.POST["email"]
     print(type(send_mail))
     send_mail(
-        'Your login link for Superlists',
-        'body',
+        'You login link for List To-Do',
+        'Use this link to log in',
         'noreplay@superlists',
         [email]
     )

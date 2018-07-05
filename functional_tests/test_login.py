@@ -15,7 +15,7 @@ class LoginTets(FunctionalTest):
         self.browser.find_element_by_name('email').send_keys(TEST_EMAIL)
         self.browser.find_element_by_name('email').send_keys(Keys.ENTER)
 
-        self.wait_forl(lambda: self.assertIn('Check your email', self.browser.find_element_by_tag_name('body').text))
+        self.wait_forl(lambda: self.assertIn('Проверьте свою почту, мы отправили Вам ссылку, которую можно использовать для входа на сайт', self.browser.find_element_by_tag_name('body').text))
 
         email = mail.outbox[0]
         self.assertIn(TEST_EMAIL, email.to)
