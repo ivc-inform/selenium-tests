@@ -9,6 +9,7 @@ class SendLoginEmailViewTest(TestCase):
     def test_redirects_to_home_page(self):
         response = self.client.post("/accounts/send_login_email/", data=dict(email="test@ivc-inform.ru"))
         self.assertRedirects(response, "/")
+
     @patch('accounts.views.send_mail')
     def test_send_mail_to_address_from_post(self, mock_send_mail=None):
         # self.send_mail_called = False
