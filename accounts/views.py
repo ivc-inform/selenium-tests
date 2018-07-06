@@ -1,4 +1,6 @@
-from django.contrib import messages
+import sys
+
+from django.contrib import messages, auth
 from django.core.mail import send_mail
 from django.shortcuts import redirect
 
@@ -21,5 +23,9 @@ def send_login_email(request):
 
 
 def login(request):
-    print(f"token: {request.GET.get('token')}")
+    print('login view', file=sys.stderr)
+    uid = request.GET.get('token')
+    user = auth.authenticate(uid=uid)
+    if user:
+        auth.login(request, user)
     return redirect("/")
