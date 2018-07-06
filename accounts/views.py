@@ -1,15 +1,18 @@
-from django.core.mail import send_mail
-from django.shortcuts import render, redirect
 from django.contrib import messages
+from django.core.mail import send_mail
+from django.shortcuts import redirect
+
+from accounts.models import Token
 
 
-# Create your views here.
 def send_login_email(request):
     email = request.POST["email"]
     # print(type(send_mail))
+    token = Token.objects.create(email=email)
+    url = request.build_absolute_uri('login?token=' + str(token.uid))
     send_mail(
         'You login link for List To-Do',
-        'Use this link to log in',
+        f'Use this link to log in: \n\n {url}',
         'noreplay@superlists',
         [email]
     )
