@@ -4,16 +4,16 @@ from django.test import TestCase
 
 from accounts.models import Token
 
-EMAIL_TEST = "test@ivc-inform.ru"
+TEST_EMAIL = "test@ivc-inform.ru"
 
 
 class SendLoginEmailViewTest(TestCase):
     def test_redirects_to_home_page(self):
-        response = self.client.post("/accounts/send_login_email", data=dict(email=EMAIL_TEST))
+        response = self.client.post("/accounts/send_login_email", data=dict(email=TEST_EMAIL))
         self.assertRedirects(response, "/")
 
     def test_adds_success_message(self):
-        response = self.client.post("/accounts/send_login_email", data=dict(email=EMAIL_TEST), follow=True)
+        response = self.client.post("/accounts/send_login_email", data=dict(email=TEST_EMAIL), follow=True)
         message = list(response.context['messages'])[0]
         self.assertEqual(
             message.message,
@@ -22,13 +22,13 @@ class SendLoginEmailViewTest(TestCase):
         self.assertEqual(message.tags, "success")
 
     def test_create_token_assiciated_with_email(self):
-        response = self.client.post("/accounts/send_login_email", data=dict(email=EMAIL_TEST))
+        response = self.client.post("/accounts/send_login_email", data=dict(email=TEST_EMAIL))
         token = Token.objects.first()
-        self.assertEqual(token.email, EMAIL_TEST)
+        self.assertEqual(token.email, TEST_EMAIL)
 
     @patch('accounts.views.send_mail')
     def test_sends_link_to_login_using_token_uid(self, mock_send_mail):
-        self.client.post("/accounts/send_login_email", data=dict(email=EMAIL_TEST))
+        self.client.post("/accounts/send_login_email", data=dict(email=TEST_EMAIL))
         token = Token.objects.first()
         expected_url = f"http://testserver/accounts/login?token={token.uid}"
         (subject, body, from_email, to_list), kwargs = mock_send_mail.call_args
