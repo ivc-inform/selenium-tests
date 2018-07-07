@@ -6,6 +6,7 @@ from selenium import webdriver
 from selenium.common.exceptions import WebDriverException
 from selenium.webdriver.common.keys import Keys
 
+from functional_tests.server_tools import reset_database
 from lists.forms import PLACE_HOLDER
 
 MAX_WAIT = 2
@@ -40,8 +41,9 @@ class FunctionalTest(StaticLiveServerTestCase):
         self.staging_port = os.environ.get("STAGING_PORT")
         if self.staging_server:
             self.live_server_url = f"http://{self.staging_server}"
-        if self.staging_port and str(self.staging_port) != '80':
-            self.live_server_url += f":{self.staging_port}"
+            if self.staging_port and str(self.staging_port) != '80':
+                self.live_server_url += f":{self.staging_port}"
+            reset_database(self.staging_server)
 
     def tearDown(self):
         "Демонтаж"
