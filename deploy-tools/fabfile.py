@@ -14,7 +14,7 @@ REPO_URL = "https://github.com/ivc-inform/selenium-tests.git"
 # fab -u uandrew -p dfqc2 --sudo-password=dfqc2 -H 192.168.0.100 makeService
 # fab -u uandrew -p nginx --sudo-password=nginx -dev.db-support.ru makeService:81
 
-def deploy(port_servise = 80):
+def deploy(port_servise=80):
     siteName = env.host
     siteFolder = f"/home/{env.user}/sites/{siteName}"
     sourceFolder = f"{siteFolder}/source"
@@ -94,7 +94,7 @@ def updateStatic(sourceFolder):
     run(f"cd {sourceFolder} && ../virtualenv/bin/python3.6 manage.py collectstatic --noinput")
 
 
-def makeService(port_servise = 80):
+def makeService(port_servise=80):
     siteName = env.host
     siteFolder = f"/home/{env.user}/sites/{siteName}"
     sourceFolder = f"{siteFolder}/source"
@@ -102,7 +102,19 @@ def makeService(port_servise = 80):
     serviceProcs(siteName, sourceFolder, env.user, port_servise)
 
 
-def serviceProcs(siteName, sourceFolder, username, port = 80):
+def restartService(port_servise=80):
+    siteName = env.host
+    _restartService(siteName)
+
+
+def _restartService(siteName):
+    sudo("systemctl daemon-reload")
+    sudo(f"systemctl enable {siteName}")
+    sudo(f"systemctl restart {siteName}")
+    sudo(f"systemctl status {siteName}")
+
+
+def serviceProcs(siteName, sourceFolder, username, port=80):
     sitesAvailableCfg = f"/etc/nginx/sites-available/{siteName}"
     sudo(f"cp {sourceFolder}/deploy-tools/nginx-site-avalabel.conf {sitesAvailableCfg}")
     sed(sitesAvailableCfg, "SITENAME", siteName, use_sudo=True)
@@ -117,10 +129,7 @@ def serviceProcs(siteName, sourceFolder, username, port = 80):
     sudo(f"cp {sourceFolder}/deploy-tools/gunicorn-SITENAME.service {servisePath}")
     sed(servisePath, "SITENAME", siteName, use_sudo=True)
     sed(servisePath, "USERNAME", username, use_sudo=True)
-    sudo("systemctl daemon-reload")
-    sudo(f"systemctl enable {siteName}")
-    sudo(f"systemctl start {siteName}")
-    sudo(f"systemctl status {siteName}")
+    _restartService(siteName)
 
 
 if __name__ == "__main__":
