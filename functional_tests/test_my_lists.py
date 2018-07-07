@@ -1,3 +1,5 @@
+import os
+
 from django.conf.global_settings import SESSION_COOKIE_NAME
 from django.contrib.auth import get_user_model
 
@@ -10,9 +12,9 @@ User = get_user_model()
 
 
 class MyListsTest(FunctionalTest):
-    def create_pre_autenticated_session(self, email):
+    def create_pre_autenticated_session(self, user_name, email):
         if self.staging_server:
-            session_key = create_session_on_server(self.staging_server, email)
+            session_key = create_session_on_server(self.staging_server, user_name, email)
         else:
             session_key = create_pre_autenticated_session(email)
 
@@ -26,6 +28,7 @@ class MyListsTest(FunctionalTest):
     def test_logged_in_user_lists_are_saved_as_my_lists(self):
         self.browser.get(self.live_server_url)
         self.wait_to_be_logged_out(email=EMAIL_TEST)
-        self.create_pre_autenticated_session(EMAIL_TEST)
+        self.create_pre_autenticated_session(os.environ.get("STAGING_USERNAME"), EMAIL_TEST)
         self.browser.get(self.live_server_url)
         self.wait_to_be_logged_in(email=EMAIL_TEST)
+
