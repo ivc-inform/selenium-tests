@@ -10,20 +10,20 @@ class ItemValidationTest(FunctionalTest):
         self.browser.get(self.live_server_url)
         self.get_item_input_box().send_keys(Keys.ENTER)
 
-        self.wait_forl(lambda: self.browser.find_element_by_css_selector("#id_text:invalid"))
+        self.wait_for(lambda: self.browser.find_element_by_css_selector("#id_text:invalid"))
 
         self.get_item_input_box().send_keys("Buy milk")
-        self.wait_forl(lambda: self.browser.find_element_by_css_selector("#id_text:valid"))
+        self.wait_for(lambda: self.browser.find_element_by_css_selector("#id_text:valid"))
 
         self.get_item_input_box().send_keys(Keys.ENTER)
         self.wait_for_row_in_list_table("1: Buy milk")
 
         self.get_item_input_box().send_keys(Keys.ENTER)
         self.wait_for_row_in_list_table("1: Buy milk")
-        self.wait_forl(lambda: self.browser.find_element_by_css_selector("#id_text:invalid"))
+        self.wait_for(lambda: self.browser.find_element_by_css_selector("#id_text:invalid"))
 
         self.get_item_input_box().send_keys("Make tea")
-        self.wait_forl(lambda: self.browser.find_element_by_css_selector("#id_text:valid"))
+        self.wait_for(lambda: self.browser.find_element_by_css_selector("#id_text:valid"))
 
         self.get_item_input_box().send_keys(Keys.ENTER)
 

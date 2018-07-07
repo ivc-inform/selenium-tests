@@ -15,7 +15,7 @@ class LoginTets(FunctionalTest):
         self.browser.find_element_by_name('email').send_keys(EMAIL_TEST)
         self.browser.find_element_by_name('email').send_keys(Keys.ENTER)
 
-        self.wait_forl(lambda: self.assertIn('Проверьте свою почту, мы отправили Вам ссылку, которую можно использовать для входа на сайт', self.browser.find_element_by_tag_name('body').text))
+        self.wait_for(lambda: self.assertIn('Проверьте свою почту, мы отправили Вам ссылку, которую можно использовать для входа на сайт', self.browser.find_element_by_tag_name('body').text))
 
         email = mail.outbox[0]
         self.assertIn(EMAIL_TEST, email.to)
@@ -30,12 +30,6 @@ class LoginTets(FunctionalTest):
 
         self.browser.get(url)
 
-        self.wait_forl(lambda: self.browser.find_element_by_link_text("Log out"))
-        navbar = self.browser.find_element_by_css_selector(".navbar")
-        self.assertIn(EMAIL_TEST, navbar.text)
-
+        self.wait_to_be_logged_in(email=EMAIL_TEST)
         self.browser.find_element_by_link_text("Log out").click()
-        self.wait_forl(lambda :self.browser.find_element_by_name("email"))
-
-        navbar = self.browser.find_element_by_css_selector(".navbar")
-        self.assertNotIn(EMAIL_TEST, navbar.text)
+        self.wait_to_be_logged_out(email=EMAIL_TEST)
