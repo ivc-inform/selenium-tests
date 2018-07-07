@@ -24,7 +24,7 @@
                 </ul>
             {% else %}
                 <form class="navbar-form navbar-right" method="post" action="{% url 'send_login_email' %}">
-                    <span>Enter email too long in:</span>
+                    <span>Enter email to Log in:</span>
                     <input class="form-control" name="email" type="text"/>
                     {% csrf_token %}
                 </form>
