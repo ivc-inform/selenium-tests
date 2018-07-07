@@ -1,5 +1,6 @@
 from fabric.context_managers import settings
 from fabric.operations import run
+from fabric.state import env
 
 
 def _get_manage_dot_py(host, user_name):

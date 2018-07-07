@@ -2,6 +2,7 @@ import os
 import time
 
 from django.contrib.staticfiles.testing import StaticLiveServerTestCase
+from fabric.state import env
 from selenium import webdriver
 from selenium.common.exceptions import WebDriverException
 from selenium.webdriver.common.keys import Keys
@@ -43,6 +44,7 @@ class FunctionalTest(StaticLiveServerTestCase):
             self.live_server_url = f"http://{self.staging_server}"
             if self.staging_port and str(self.staging_port) != '80':
                 self.live_server_url += f":{self.staging_port}"
+            env.password = os.environ.get("STAGING_PASSWORD")
             reset_database(self.staging_server, os.environ.get("STAGING_USERNAME"))
 
     def tearDown(self):
