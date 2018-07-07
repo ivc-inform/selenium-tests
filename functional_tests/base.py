@@ -8,6 +8,23 @@ from selenium.webdriver.common.keys import Keys
 
 from lists.forms import PLACE_HOLDER
 
+MAX_WAIT = 2
+MIN_WAIT = 0.1
+
+
+def wait(function):
+    def modify_function(*args, **kwargs):
+        startTime = time.time()
+        while True:
+            try:
+                return function(*args, **kwargs)
+            except (AssertionError, WebDriverException) as ex:
+                if time.time() - startTime > MAX_WAIT:
+                    raise ex
+                time.sleep(MIN_WAIT)
+
+    return modify_function
+
 
 class FunctionalTest(StaticLiveServerTestCase):
     def setUp(self):
@@ -25,8 +42,6 @@ class FunctionalTest(StaticLiveServerTestCase):
             self.live_server_url = f"http://{staging_server}"
         if staging_port:
             self.live_server_url += f":{staging_port}"
-        self.MAX_WAIT = 2
-        self.MIN_WAIT = 0.1
 
     def tearDown(self):
         "Демонтаж"
@@ -38,9 +53,9 @@ class FunctionalTest(StaticLiveServerTestCase):
             try:
                 return self.browser.find_element_by_id("id_text")
             except (AssertionError, WebDriverException) as ex:
-                if time.time() - startTime > self.MAX_WAIT:
+                if time.time() - startTime > MAX_WAIT:
                     raise ex
-                time.sleep(self.MIN_WAIT)
+                time.sleep(MIN_WAIT)
 
     def imputToDo(self, toDo):
         inputbox = self.get_item_input_box()
@@ -49,41 +64,24 @@ class FunctionalTest(StaticLiveServerTestCase):
         inputbox.send_keys(toDo)
         inputbox.send_keys(Keys.ENTER)
 
+    @wait
     def wait_for_row_in_list_table(self, rowText):
-        startTime = time.time()
-        while True:
-            try:
-                table = self.browser.find_element_by_id("id_list_table")
-                rows = table.find_elements_by_tag_name("tr")
-                self.assertIn(rowText, [row.text for row in rows])
-            except (AssertionError, WebDriverException) as ex:
-                if time.time() - startTime > self.MAX_WAIT:
-                    raise ex
-                time.sleep(self.MIN_WAIT)
-            else:
-                return
+        table = self.browser.find_element_by_id("id_list_table")
+        rows = table.find_elements_by_tag_name("tr")
+        self.assertIn(rowText, [row.text for row in rows])
 
-    def wait_for(self, fn):
-        startTime = time.time()
-        # step = 1
-        while True:
-            try:
-                return fn()
-            except (AssertionError, WebDriverException) as ex:
-                if time.time() - startTime > self.MAX_WAIT:
-                    raise ex
-                time.sleep(self.MIN_WAIT)
-                # print(f"waiting step: {step}")
-                # step += 1
-            else:
-                return
+    @wait
+    def wait_for(self, function):
+        return function()
 
+    @wait
     def wait_to_be_logged_in(self, email):
-        self.wait_for(lambda : self.browser.find_element_by_link_text("Log out"))
+        self.browser.find_element_by_link_text("Log out")
         navbar = self.browser.find_element_by_css_selector(".navbar")
         self.assertIn(email, navbar.text)
 
+    @wait
     def wait_to_be_logged_out(self, email):
-        self.wait_for(lambda : self.browser.find_element_by_name("email"))
+        self.browser.find_element_by_name("email")
         navbar = self.browser.find_element_by_css_selector(".navbar")
         self.assertNotIn(email, navbar.text)
