@@ -36,12 +36,12 @@ class FunctionalTest(StaticLiveServerTestCase):
         ]
         self.browser = webdriver.Firefox()
         # self.browser = webdriver.Chrome()
-        staging_server = os.environ.get("STAGING_SERVER")
-        staging_port = os.environ.get("STAGING_PORT")
-        if staging_server:
-            self.live_server_url = f"http://{staging_server}"
-        if staging_port:
-            self.live_server_url += f":{staging_port}"
+        self.staging_server = os.environ.get("STAGING_SERVER")
+        self.staging_port = os.environ.get("STAGING_PORT")
+        if self.staging_server:
+            self.live_server_url = f"http://{self.staging_server}"
+        if self.staging_port:
+            self.live_server_url += f":{self.staging_port}"
 
     def tearDown(self):
         "Демонтаж"

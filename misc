@@ -10,3 +10,5 @@ python manage.py collectstatic
 python manage.py test functional_tests.tests_list_item_validation
 
 ln -s /etc/nginx/sites-available/default /etc/nginx/sites-enabled/default
+
+test@ivc-inform.ru  //pass mt30718tm
