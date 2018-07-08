@@ -26,7 +26,7 @@ class LoginTets(FunctionalTest):
         print(inbox.getwelcome())
         try:
             inbox.user(test_email)
-            inbox.pass_(os.environ['TEST_BOX_PASS'])
+            inbox.pass_(os.environ['EMAIL_PASSWORD'])
             while time.time() - start < 60:
                 count, _ = inbox.stat()
                 print(f"count:{count}")
