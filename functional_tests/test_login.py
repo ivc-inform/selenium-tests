@@ -22,29 +22,34 @@ class LoginTets(FunctionalTest):
 
         email_id = None
         start = time.time()
-        inbox = poplib.POP3_SSL("mail.hostland.ru")
-        print(inbox.getwelcome())
-        try:
-            inbox.user(test_email)
-            inbox.pass_(os.environ['EMAIL_PASSWORD'])
-            while time.time() - start < 60:
-                count, _ = inbox.stat()
-                print(f"count:{count}")
+        while time.time() - start < 60:
+            try:
+                #print("before POP3_SSL")
+                inbox = poplib.POP3_SSL("mail.hostland.ru")
+                #print(inbox.getwelcome())
+
+                #print("test_email", test_email)
+                inbox.user(test_email)
+                #print('EMAIL_PASSWORD', os.environ['EMAIL_PASSWORD'])
+                inbox.pass_(os.environ['EMAIL_PASSWORD'])
+                count, size = inbox.stat()
+                #print("count", count)
+                #print("size", size)
+
                 for i in reversed(range(max(1, count - 10), count + 1)):
-                    print('getting msg', i)
+                    #print('getting msg', i)
                     _, lines, __ = inbox.retr(i)
                     lines = [l.decode('utf8') for l in lines]
-                    print(lines)
+                    #print(lines)
                     if f"Subject: {subject}" in lines:
                         email_id = i
                         body = "\n".join(lines)
                         return body
-                time.sleep(5)
-
-        finally:
-            if email_id:
-                inbox.dele(email_id)
-            inbox.quit()
+            finally:
+                if email_id:
+                    inbox.dele(email_id)
+                inbox.quit()
+                #print("after quit")
 
     def test_can_get_email_link_to_log_in(self):
         self.browser.get(self.live_server_url)
@@ -53,26 +58,26 @@ class LoginTets(FunctionalTest):
 
         self.wait_for(lambda: self.assertIn('Проверьте свою почту, мы отправили Вам ссылку, которую можно использовать для входа на сайт', self.browser.find_element_by_tag_name('body').text))
 
-        print("point 1")
+        #print("point 1")
         body = self.wait_for_email(EMAIL_TEST, SUBJECT)
-        print("point 2")
+        #print("point 2")
 
         self.assertIn("Use this link to log in", body)
-        print("point 3")
+        #print("point 3")
         url_search = re.search(r"http://.+/.+$", body)
-        print("point 4")
+        #print("point 4")
 
         if not url_search:
             self.fail(f"Could not find url in email body:\n{body}")
 
         url = url_search.group(0)
-        print("point 5")
+        #print("point 5")
         self.assertIn(self.live_server_url, url)
-        print("point 6")
+        #print("point 6")
 
-        print("url", url)
+        #print("url", url)
         self.browser.get(url)
-        print("point 7")
+        #print("point 7")
         self.wait_to_be_logged_in(email=EMAIL_TEST)
         self.browser.find_element_by_link_text("Log out").click()
         self.wait_to_be_logged_out(email=EMAIL_TEST)
