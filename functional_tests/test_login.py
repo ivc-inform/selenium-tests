@@ -31,7 +31,7 @@ class LoginTets(FunctionalTest):
                 #print("test_email", test_email)
                 inbox.user(test_email)
                 #print('EMAIL_PASSWORD', os.environ['EMAIL_PASSWORD'])
-                inbox.pass_(os.environ['EMAIL_PASSWORD'])
+                inbox.pass_(os.environ["EMAIL_PASSWORD"])
                 count, size = inbox.stat()
                 #print("count", count)
                 #print("size", size)
