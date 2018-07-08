@@ -128,8 +128,8 @@ def serviceProcs(siteName, sourceFolder, username, port=80):
     servisePath = f"/etc/systemd/system/{siteName}.service"
     sudo(f"cp {sourceFolder}/deploy-tools/gunicorn-SITENAME.service {servisePath}")
     sed(servisePath, "SITENAME", siteName, use_sudo=True)
+    sed(servisePath, "SMTP_SECRET", "Uandrew1965", use_sudo=True)
     sed(servisePath, "SECRET", "mt30718tm", use_sudo=True)
-    sed(servisePath, "SMTP", "Uandrew1965", use_sudo=True)
     sed(servisePath, "USERNAME", username, use_sudo=True)
     _restartService(siteName)
 
