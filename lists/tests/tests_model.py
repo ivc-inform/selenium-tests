@@ -3,12 +3,13 @@ from unittest import skip
 from django.core.exceptions import ValidationError
 from django.test import TestCase
 
+from accounts.models import User
 from lists.forms import ItemForm
 from lists.models import Item, List
 from lists.settings import templateListPage, listUrl, message1
 
 
-class ListViewTest(TestCase):
+class ListModelTest(TestCase):
     def test_uses_list_template(self):
         list_ = List.objects.create()
         response = self.client.get(f"/{listUrl(list_.id)}")
@@ -72,3 +73,8 @@ class ListViewTest(TestCase):
     def test_home_page_uses_item_form(self):
         response = self.client.get("/")
         self.assertIsInstance(response.context['form'], ItemForm)
+
+    def test_lists_can_have_owners(self):
+        user = User.objects.create(email="a@b.com")
+        list_ = List.objects.create(owner=user)
+        self.assertIn(list_, user.list_set.all())
