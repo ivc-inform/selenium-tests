@@ -7,7 +7,7 @@ from project import settings
 User = get_user_model()
 
 
-def create_pre_autenticated_session(email):
+def create_pre_authenticated_session(email):
     user = User.objects.create(email=email)
     session = SessionStore()
     session[SESSION_KEY] = user.pk
@@ -20,5 +20,5 @@ class Command(BaseCommand):
         parser.add_argument("email")
 
     def handle(self, *args, **options):
-        session_key = create_pre_autenticated_session(options['email'])
+        session_key = create_pre_authenticated_session(options['email'])
         self.stdout.write(session_key)

@@ -9,7 +9,7 @@ from selenium import webdriver
 from selenium.common.exceptions import WebDriverException
 from selenium.webdriver.common.keys import Keys
 
-from functional_tests.management.commands.create_session import create_pre_autenticated_session
+from functional_tests.management.commands.create_session import create_pre_authenticated_session
 from functional_tests.server_tools import reset_database, create_session_on_server
 from lists.forms import PLACE_HOLDER
 
@@ -105,7 +105,7 @@ class FunctionalTest(StaticLiveServerTestCase):
         if self.staging_server:
             session_key = create_session_on_server(self.staging_server, user_name, email)
         else:
-            session_key = create_pre_autenticated_session(email)
+            session_key = create_pre_authenticated_session(email)
 
         self.browser.get(self.live_server_url + "/404_no_such_url/")
         self.browser.add_cookie(dict(
