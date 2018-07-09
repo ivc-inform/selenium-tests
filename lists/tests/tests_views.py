@@ -98,5 +98,5 @@ class MyListsTest(TestCase):
         User.objects.create(email="wrong@owner.com")
         correct_user = User.objects.create(email = "a@b.com")
         response = self.client.get("/lists/users/a@b.com/")
-        self.assertEqual(response.content['owner'], correct_user)
+        self.assertEqual(response.context['owner'], correct_user)
 
