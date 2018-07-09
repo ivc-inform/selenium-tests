@@ -1,5 +1,3 @@
-from unittest import skip
-
 from django.core.exceptions import ValidationError
 from django.test import TestCase
 
@@ -52,6 +50,7 @@ class ListModelTest(TestCase):
 
     def test_can_save_a_POST_request_to_an_existing_list(self):
         other_list = List.objects.create()
+        88
         correct_list = List.objects.create()
 
         self.client.post(f"/lists/{correct_list.id}/", data=dict(text=message1))
@@ -78,3 +77,9 @@ class ListModelTest(TestCase):
         user = User.objects.create(email="a@b.com")
         list_ = List.objects.create(owner=user)
         self.assertIn(list_, user.list_set.all())
+
+    def test_list_name_is_first_item_text(self):
+        list_ = List.objects.create()
+        Item.objects.create(list=list_, text="first_item")
+        Item.objects.create(list=list_, text="second_item")
+        self.assertEqual(list_.name, "first_item")
