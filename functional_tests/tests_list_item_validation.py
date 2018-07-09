@@ -1,6 +1,5 @@
 from selenium.webdriver.common.keys import Keys
 
-from lists.forms import EMPTY_ITEM_ERROR
 from .base import FunctionalTest
 
 
