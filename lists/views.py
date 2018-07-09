@@ -34,8 +34,5 @@ def new_list(request):
 
 
 def my_lists(request, email):
-    try:
-        owner = User.objects.get(email=email)
-        return render(request, "my_lists.html", dict(owner=owner))
-    except User.DoesNotExist:
-        return render(request, "my_lists.html")
+    owner = User.objects.get(email=email)
+    return render(request, "my_lists.html", dict(owner=owner))
