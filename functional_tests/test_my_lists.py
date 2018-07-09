@@ -1,3 +1,5 @@
+import os
+
 from django.contrib.auth import get_user_model
 
 from accounts.tests.test_views import EMAIL_TEST
@@ -7,8 +9,9 @@ User = get_user_model()
 
 
 class MyListsTest(FunctionalTest):
+
     def test_logged_in_users_lists_are_saved_as_my_lists(self):
-        self.create_pre_authenticated_session(EMAIL_TEST)
+        self.create_pre_authenticated_session(os.environ.get("STAGING_USERNAME"), EMAIL_TEST)
 
         self.browser.get(self.live_server_url)
 
