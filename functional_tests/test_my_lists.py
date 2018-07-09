@@ -21,7 +21,7 @@ class MyListsTest(FunctionalTest):
 
         self.browser.find_element_by_link_text("My lists").click()
 
-        self.wait_for(lambda: self.browser.find_element_by_link_text("Reticulate splines"))
+        self.wait_for(lambda: self.browser.find_element_by_link_text('Reticulate splines'))
 
         self.browser.find_element_by_link_text("Reticulate splines").click()
 
