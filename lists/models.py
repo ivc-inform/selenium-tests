@@ -6,7 +6,7 @@ from project import settings
 
 
 class List(Model):
-    owner = models.ForeignKey(settings.AUTH_USER_MODEL, blank=True, null=True, on_delete=None)
+    # owner = models.ForeignKey(settings.AUTH_USER_MODEL, blank=True, null=True, on_delete=None)
 
     def get_absolute_url(self):
         return reverse('view_list', args=[self.id])
