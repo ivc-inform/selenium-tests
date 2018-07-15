@@ -37,8 +37,9 @@ def new_list(request):
 
 
 def new_list2(request):
-    NewListForm(data=request.POST)
-
+    form = NewListForm(data=request.POST)
+    list_ = form.save(owner=request.user)
+    return redirect(list_)
 
 
 def my_lists(request, email):

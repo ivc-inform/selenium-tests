@@ -1,14 +1,13 @@
 from unittest import skip
-from unittest.mock import patch
+from unittest.mock import patch, Mock
 
 from django.http import HttpRequest
 from django.test import TestCase
-from django.utils.html import escape
 
 from accounts.models import User
 from lists.forms import EMPTY_ITEM_ERROR, ItemForm
 from lists.models import Item, List
-from lists.settings import templateListPage, listUrl, message1
+from lists.settings import listUrl
 from lists.views import new_list2
 
 
@@ -114,10 +113,11 @@ class MyListsTest(TestCase):
         self.assertEqual(response.context['owner'], correct_user)
 
 @patch("lists.views.NewListForm")
-class NewListViewInitTest(TestCase):
+class NewListViewUnitTest(TestCase):
     def setUp(self):
         self.request = HttpRequest()
         self.request.POST["text"] = "new list item"
+        self.request.user = Mock()
 
     def test_passes_POST_data_to_NewListForm(self, mockNewListForm):
         new_list2(self.request)
@@ -128,3 +128,12 @@ class NewListViewInitTest(TestCase):
         mock_form.is_valid.return_value = True
         new_list2(self.request)
         mock_form.save.assert_called_once_with(owner=self.request.user)
+
+    @patch("lists.views.redirect")
+    def test_redirects_to_form_returned_object_if_form_valid(self, mock_redirect, mockNewListForm):
+        mock_form = mockNewListForm.return_value
+        mock_form.is_valid.return_value = True
+
+        response = new_list2(self.request)
+        self.assertEqual(response, mock_redirect.return_value)
+        mock_redirect.assert_called_once_with(mock_form.save.return_value)
