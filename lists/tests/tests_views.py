@@ -90,7 +90,6 @@ class NewListIntegratedTest(TestCase):
         self.assertEqual(List.objects.count(), 0)
         self.assertEqual(Item.objects.count(), 0)
 
-    @skip
     @patch('lists.views.List')
     @patch('lists.views.ItemForm')
     def test_list_owner_is_saved_if_user_is_autenticated(self, mockItemForm, mockList):
