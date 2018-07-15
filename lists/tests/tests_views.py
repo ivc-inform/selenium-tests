@@ -1,5 +1,7 @@
 from unittest import skip
+from unittest.mock import patch
 
+from django.http import HttpRequest
 from django.test import TestCase
 from django.utils.html import escape
 
@@ -7,6 +9,7 @@ from accounts.models import User
 from lists.forms import EMPTY_ITEM_ERROR, ItemForm
 from lists.models import Item, List
 from lists.settings import templateListPage, listUrl, message1
+from lists.views import new_list2
 
 
 class ItemModelTest(TestCase):
@@ -39,7 +42,7 @@ class ItemModelTest(TestCase):
         self.assertEqual(secondItem.list, list_)
 
 
-class NewListTest(TestCase):
+class NewListViewIntegratedTest(TestCase):
 
     def setUp(self):
         self.itemText = "A new list item"
@@ -89,12 +92,14 @@ class NewListTest(TestCase):
         self.assertEqual(List.objects.count(), 0)
         self.assertEqual(Item.objects.count(), 0)
 
+    @skip
     def test_list_owner_is_saved_if_user_is_autenticated(self):
         user = User.objects.create(email="a@b.com")
         self.client.force_login(user)
         self.client.post("/lists/new", data=dict(text="new_item"))
         list_ = List.objects.first()
         self.assertEqual(list_.owner, user)
+
 
 class MyListsTest(TestCase):
     def test_my_lists_url_renders_my_lists_template(self):
@@ -104,7 +109,22 @@ class MyListsTest(TestCase):
 
     def test_passes_correct_owner_to_template(self):
         User.objects.create(email="wrong@owner.com")
-        correct_user = User.objects.create(email = "a@b.com")
+        correct_user = User.objects.create(email="a@b.com")
         response = self.client.get("/lists/users/a@b.com/")
         self.assertEqual(response.context['owner'], correct_user)
 
+@patch("lists.views.NewListForm")
+class NewListViewInitTest(TestCase):
+    def setUp(self):
+        self.request = HttpRequest()
+        self.request.POST["text"] = "new list item"
+
+    def test_passes_POST_data_to_NewListForm(self, mockNewListForm):
+        new_list2(self.request)
+        mockNewListForm.assert_called_once_with(data=self.request.POST)
+
+    def test_saves_from_with_owner_if_form_valid(self, mockNewListForm):
+        mock_form = mockNewListForm.return_value
+        mock_form.is_valid.return_value = True
+        new_list2(self.request)
+        mock_form.save.assert_called_once_with(owner=self.request.user)

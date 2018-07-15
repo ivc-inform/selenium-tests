@@ -1,7 +1,7 @@
 from django.shortcuts import render, redirect
 
 from accounts.models import User
-from lists.forms import ItemForm
+from lists.forms import ItemForm, NewListForm
 from lists.models import Item, List
 from lists.settings import templateListPage, templateHomePage
 
@@ -34,6 +34,11 @@ def new_list(request):
         return redirect(list_)
     else:
         return render(request, "home.html", dict(form=form))
+
+
+def new_list2(request):
+    NewListForm(data=request.POST)
+
 
 
 def my_lists(request, email):
