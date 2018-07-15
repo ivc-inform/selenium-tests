@@ -36,6 +36,10 @@ def new_list(request):
         return render(request, "home.html", dict(form=form))
 
 
+def new_list2(request):
+    ...
+
+
 def my_lists(request, email):
     owner = User.objects.get(email=email)
     return render(request, "my_lists.html", dict(owner=owner))

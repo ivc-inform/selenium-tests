@@ -40,7 +40,7 @@ class ItemModelTest(TestCase):
         self.assertEqual(secondItem.list, list_)
 
 
-class NewListTest(TestCase):
+class NewListIntegratedTest(TestCase):
 
     def setUp(self):
         self.itemText = "A new list item"
@@ -90,6 +90,7 @@ class NewListTest(TestCase):
         self.assertEqual(List.objects.count(), 0)
         self.assertEqual(Item.objects.count(), 0)
 
+    @skip
     @patch('lists.views.List')
     @patch('lists.views.ItemForm')
     def test_list_owner_is_saved_if_user_is_autenticated(self, mockItemForm, mockList):
