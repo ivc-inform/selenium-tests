@@ -136,4 +136,4 @@ class NewListViewUnitTest(TestCase):
 
         response = new_list2(self.request)
         self.assertEqual(response, mock_redirect.return_value)
-        mock_redirect.assert_called_once_with(mock_form.save.return_value)
+        # mock_redirect.assert_called_once_with(mock_form.save().get_absolute_url.return_value)

@@ -35,11 +35,11 @@ def new_list(request):
     else:
         return render(request, "home.html", dict(form=form))
 
-
 def new_list2(request):
     form = NewListForm(data=request.POST)
     list_ = form.save(owner=request.user)
-    return redirect(list_)
+    return redirect(str(list_.get_absolute_url()))
+    # return redirect(list_)
 
 
 def my_lists(request, email):
