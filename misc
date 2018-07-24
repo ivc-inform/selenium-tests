@@ -14,6 +14,8 @@ ln -s /etc/nginx/sites-available/default /etc/nginx/sites-enabled/default
 test@ivc-inform.ru  //pass mt30718tm
 
 docker run \
+  --name jenkins \
+  --restart on-failure:5 \
   -u root \
   -p 8080:8080 \
   -v jenkins-data:/var/jenkins_home \
